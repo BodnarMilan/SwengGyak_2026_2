@@ -2,5 +2,5 @@
 
 Téma: Videójáték Webshop
 Adatbázis: Firebase, Firestore
-Frontend: React
-Backend: Nextjs
+Frontend: HTML, CSS, JavaScript
+Backend: Nodejs
