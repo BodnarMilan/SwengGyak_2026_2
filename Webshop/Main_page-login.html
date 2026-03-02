@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style/style-login.css">
 </head>
 <body>
     <header>
@@ -40,16 +41,16 @@
                 
             </ul>
         </nav>
-        <H1>Webshop Login</H1>     
+        <H1 class="login">Webshop Login</H1>     
 </header>
-<main>
+<main class="login-container">
     <H2>Please login to access your account</H2>
     <form action="Dashboard.html" method="post">    <!-- Basic login form-->
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required><br><br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br><br>
-        <input type="submit" value="Login">
+        <input type="submit" value="Login" class="login-btn">
         <hr>
     </form>
 </main>
