@@ -19,7 +19,16 @@
     margin-bottom: 20px;
 }
 
+.login-container input[type="text"], 
+.login-container input[type="password"] {
+    width: 80%;      
+    height: 25px;    
+    box-sizing: border-box; /* ensures padding doesn't increase the width */
+    padding: 5px;     /* adds space for text inside the box */
+}
+
 .login-btn {
+    margin-top: 10px;
     width: 100%;
     padding: 10px;
     background-color: #007BFF;
@@ -29,3 +38,150 @@
     cursor: pointer;
 }
 
+.login-btn:hover {
+    background-color: #0056b3;
+}
+
+.login-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.toggle-password {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    color: #007BFF;
+    cursor: pointer;
+}
+.toggle-password:hover {
+    color: #0056b3;
+}
+
+/* position the nav to allow items on left and right */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    position: relative;
+}
+
+.home-btn {
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+/* match the hover effect of the login and preferences buttons */
+.home-btn:hover {
+    background-color: #0056b3;
+    color: white; 
+}
+
+/* Dropdown Container */
+.preferences-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* hidden menu - New */
+.dropdown-content {
+    opacity: 0;            /* invisible */
+    visibility: hidden;    /* non-clickable while hidden */
+    transform: translateY(-10px); /* starts slightly higher for a "slide" effect */
+    transition: all 0.3s ease;    /* the magic timing */
+    
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 220px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 10;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+/* SHOW the menu on hover with animation */
+.preferences-dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* slides down to its natural position */
+}
+
+/* internal form styling */
+.dropdown-content label {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.dropdown-content select {
+    width: 100%;
+    padding: 5px;
+}
+
+.submit-btn {
+    width: 100%;
+    margin-top: 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+}
+
+footer {
+    position: fixed;   
+    bottom: 20px;      
+    left: 20px;        
+    width: auto;       
+}
+
+.footer-links {
+    display: flex;     
+    gap: 15px;         
+    align-items: center;
+}
+
+.footer-links p {
+    margin: 0;         
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #333;       
+    font-size: 0.9rem;
+}
+
+.footer-links p:first-child::after {
+    content: "|";
+    margin-left: 15px; 
+    color: #ccc;       
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
