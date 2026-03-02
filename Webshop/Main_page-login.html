@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <div class="Pop-Up-overlay"></div>
+        <div class="Pop-Up-Window"></div> <!-- Pop Up window  -->
+        <div class="Pop-Up-header"></div> <!-- Include the title of the pop up window and the X button to close the pop up window  -->   
+            <h2>Regional Preferences</h2>
+            <button class="close-btn">X</button>
+            <p class="Pop-Up-subtitle">Please select your preferrencies</p>
+            <div class="Pop-Up-body"></div>
+            <Section>
+            <form class="Pop-Up-form">  <!-- Form to select the language and currency preferences of the user  -->
+                <label for="language">Language:</label>
+                <select id="language" name="language">
+                    <option value="english">English</option>
+                    <option value="spanish">Spanish</option>
+                    <option value="french">French</option>
+                    <option value="german">German</option>
+                    <option value="hungarian">Hungarian</option>
+                </select><br><br>
+                <label for="currency">Currency:</label> <!-- Currency selection for the user  -->
+                <select id="currency" name="currency">
+                    <option value="usd">USD</option>
+                    <option value="eur">EUR</option>
+                    <option value="gbp">GBP</option>
+                    <option value="huf">HUF</option>
+                </select><br><br>
+                <input class="submit-btn" type="submit" value="Save Preferences">  <!-- Save preferences and Cancel  -->
+                <button class="cancel-btn">Cancel</button>
+                </Section>
+        <nav>
+            <ul>
+                <li><a href="Main_page.html">Back to Home page</a></li>  <!-- Future nav bar-->
+                
+            </ul>
+        </nav>
+        <H1>Webshop Login</H1>     
+</header>
+<main>
+    <H2>Please login to access your account</H2>
+    <form action="Dashboard.html" method="post">    <!-- Basic login form-->
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" value="Login">
+        <hr>
+    </form>
+</main>
+<footer>
+<p class="Terms-of-use"><a href="Terms_of_use.html"><b>Terms of use</b></a></p>     <!-- Still in progress -->
+<p class="Privacy-policy"><a href="Privacy_policy.html"> <b>Privacy Policy</b></a></p> <!-- Still in progress -->
+</footer>
+
+</body>
+</html>
