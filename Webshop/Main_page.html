@@ -1,20 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+    <head>
     <meta charset="UTF-8">
+    <title>Webshop</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documento</title>
 
+    <link rel="stylesheet" href="style/style-main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">   
+    </head>
+
+<header class="main-header">
     
-</head>
-<header>
-    
+    <!-- BAL OLDAL -->
+    <div class="header-left">
+        <div class="logo-circle"></div>
+        <span class="logo-text">Halo</span>
+    </div>
+
+    <!-- KÖZÉP -->
+    <div class="header-center">
+        <input type="text" placeholder="Search for games, top-ups and more">
+    </div>
+
+    <!-- JOBB OLDAL -->
+    <div class="header-right">
+
+    <!-- REGIONAL DROPDOWN -->
+    <div class="preferences-dropdown">
+        <button class="dropbtn">Magyar | HUF ▼</button>
+
+        <div class="dropdown-content">
+            <p class="Pop-Up-subtitle">Select your preferences</p>
+
+            <form class="Pop-Up-form">
+                <label for="language">Language:</label>
+                <select id="language" name="language">
+                    <option value="english">English</option>
+                    <option value="spanish">Spanish</option>
+                    <option value="french">French</option>
+                    <option value="german">German</option>
+                    <option value="hungarian" selected>Hungarian</option>
+                </select>
+
+                <label for="currency">Currency:</label>
+                <select id="currency" name="currency">
+                    <option value="usd">USD</option>
+                    <option value="eur">EUR</option>
+                    <option value="gbp">GBP</option>
+                    <option value="huf" selected>HUF</option>
+                </select>
+
+                <input class="submit-btn" type="submit" value="Save">
+            </form>
+        </div>
+    </div>
+
+    <span class="icon">♡</span>
+    <span class="icon">🛒</span>
+    <a href="Main_page-login.html" class="login-link">Bejelentkezés | Regisztráció</a>
+
+</div>
+
 </header>
 
+<body> 
+ <!-- PLATFORM VÁLASZTÁS -->
+<nav class="platform-nav">
 
+    <a href="#" class="platform-item active">
+        <i class="fa-solid fa-border-all"></i>
+        <span>All</span>
+    </a>
 
-<body>
+    <a href="#" class="platform-item">
+        <i class="fa-brands fa-windows"></i>
+        <span>PC</span>
+    </a>
+
+    <a href="#" class="platform-item">
+        <i class="fa-brands fa-steam"></i>
+        <span>Steam</span>
+    </a>
+
+    <a href="#" class="platform-item">
+        <i class="fa-brands fa-playstation"></i>
+        <span>PlayStation</span>
+    </a>
+
+    <a href="#" class="platform-item">
+        <i class="fa-brands fa-xbox"></i>
+        <span>Xbox</span>
+    </a>
+
+    <a href="#" class="platform-item">
+        <i class="fa-solid fa-gamepad"></i>
+        <span>Nintendo</span>
+    </a>
+</nav>
+
+<div class="main-layout">
+
+<aside class="genre-sidebar">
+
+    <h3>Genres</h3>
+
+    <ul>
+        <li class="active">
+            <i class="fa-solid fa-border-all"></i>
+            <span>All Games</span>
+        </li>
+
+        <li><i class="fa-solid fa-crosshairs"></i><span>Action</span></li>
+        <li><i class="fa-solid fa-dragon"></i><span>RPG</span></li>
+        <li><i class="fa-solid fa-gun"></i><span>FPS</span></li>
+        <li><i class="fa-solid fa-chess"></i><span>Strategy</span></li>
+        <li><i class="fa-solid fa-futbol"></i><span>Sports</span></li>
+        <li><i class="fa-solid fa-ghost"></i><span>Horror</span></li>
+        <li><i class="fa-solid fa-puzzle-piece"></i><span>Indie</span></li>
+        <li><i class="fa-solid fa-earth-americas"></i><span>Open World</span></li>
+        <li><i class="fa-solid fa-car"></i><span>Racing</span></li>
+        <li><i class="fa-solid fa-users"></i><span>Multiplayer</span></li>
+        <li><i class="fa-solid fa-vr-cardboard"></i><span>VR</span></li>
+    </ul>
+
+</aside>
+
+</div>
 
 </body>
 

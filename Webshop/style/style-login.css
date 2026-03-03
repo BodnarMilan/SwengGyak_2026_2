@@ -1,187 +1,294 @@
-.login{
-    text-align: center;
-    margin-top: 50px;
-    font-size: 2em;
-    color: #333;
+/* =========================
+   GLOBAL
+========================= */
+
+html, body {
+    height: 100%;
 }
 
-.login-container {
-    width: 300px;
-    margin: 10px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #0f0f14;
+    color: #fff;
 }
 
-.login-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
+/* =========================
+   TOP NAV
+========================= */
 
-.login-container input[type="text"], 
-.login-container input[type="password"] {
-    width: 80%;      
-    height: 25px;    
-    box-sizing: border-box; /* ensures padding doesn't increase the width */
-    padding: 5px;     /* adds space for text inside the box */
-}
-
-.login-btn {
-    margin-top: 10px;
-    width: 100%;
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.login-btn:hover {
-    background-color: #0056b3;
-}
-
-.login-container label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-}
-
-.toggle-password {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: transparent;
-    border: none;
-    color: #007BFF;
-    cursor: pointer;
-}
-.toggle-password:hover {
-    color: #0056b3;
-}
-
-/* position the nav to allow items on left and right */
 .top-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #f8f9fa;
-    position: relative;
+    padding: 14px 30px;
+    background-color: #14141c;
+    border-bottom: 1px solid #222;
 }
 
 .home-btn {
     text-decoration: none;
-    background-color: #007bff;
+    background-color: #1c1c25;
     color: white;
-    padding: 10px 15px;
-    border-radius: 4px;
-    font-weight: bold;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 600;
     font-size: 0.9rem;
-    transition: background-color 0.3s ease;
+    border: 1px solid #2c2c38;
+    transition: 0.25s ease;
     display: inline-block;
 }
 
-/* match the hover effect of the login and preferences buttons */
 .home-btn:hover {
-    background-color: #0056b3;
-    color: white; 
+    border-color: #7b2ff7;
+    box-shadow: 0 0 10px rgba(123, 47, 247, 0.35);
 }
 
-/* Dropdown Container */
+/* =========================
+   PAGE TITLE
+========================= */
+
+.login {
+    text-align: center;
+    margin: 28px 0 10px;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* =========================
+   LOGIN BOX
+========================= */
+
+.login-container {
+    width: 340px;
+    margin: 18px auto 0;
+    padding: 22px 22px 18px;
+    background-color: #14141c;
+    border: 1px solid #222;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+    border-radius: 14px;
+}
+
+.login-container h2 {
+    text-align: center;
+    margin: 0 0 16px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #cfcfe6;
+}
+
+/* Labels */
+.login-container label {
+    display: block;
+    margin: 14px 0 6px;
+    color: #b8b8c8;
+    font-size: 0.92rem;
+}
+
+/* Inputs */
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #2c2c38;
+    background-color: #1c1c25;
+    color: white;
+    outline: none;
+    transition: 0.25s ease;
+}
+
+.login-container input::placeholder {
+    color: #7d7d90;
+}
+
+.login-container input:focus {
+    border-color: #7b2ff7;
+    box-shadow: 0 0 10px rgba(123, 47, 247, 0.45);
+}
+
+/* Password row */
+.password-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.password-wrapper input {
+    flex: 1;
+}
+
+/* Toggle button */
+.toggle-password {
+    height: 40px;
+    padding: 0 12px;
+    background-color: transparent;
+    border: 1px solid #2c2c38;
+    color: #cfcfe6;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.25s ease;
+    white-space: nowrap;
+}
+
+.toggle-password:hover {
+    border-color: #7b2ff7;
+    color: #ffffff;
+}
+
+/* Login button */
+.login-btn {
+    margin-top: 16px;
+    width: 100%;
+    padding: 11px 12px;
+    background-color: #7b2ff7;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: 0.25s ease;
+}
+
+.login-btn:hover {
+    background-color: #5d1edb;
+    box-shadow: 0 0 12px rgba(123, 47, 247, 0.45);
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #222;
+    margin: 16px 0 0;
+}
+
+/* =========================
+   DROPDOWN (REGIONAL PREFS)
+========================= */
+
 .preferences-dropdown {
     position: relative;
     display: inline-block;
 }
 
 .dropbtn {
-    background-color: #007bff;
+    background-color: transparent;
     color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
+    padding: 10px 14px;
+    border: 1px solid #2c2c38;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: bold;
-    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+    transition: 0.25s ease;
 }
 
-/* hidden menu - New */
+.dropbtn:hover {
+    border-color: #7b2ff7;
+    box-shadow: 0 0 10px rgba(123, 47, 247, 0.35);
+}
+
+/* dropdown panel */
 .dropdown-content {
-    opacity: 0;            /* invisible */
-    visibility: hidden;    /* non-clickable while hidden */
-    transform: translateY(-10px); /* starts slightly higher for a "slide" effect */
-    transition: all 0.3s ease;    /* the magic timing */
-    
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.25s ease;
+
     position: absolute;
     right: 0;
-    background-color: white;
-    min-width: 220px;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    margin-top: 12px;
+    min-width: 240px;
     z-index: 10;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    margin-top: 10px;
+
+    background-color: #1c1c25;
+    border: 1px solid #2c2c38;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    padding: 16px;
+    border-radius: 12px;
 }
 
-/* SHOW the menu on hover with animation */
 .preferences-dropdown:hover .dropdown-content {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0); /* slides down to its natural position */
+    transform: translateY(0);
 }
 
-/* internal form styling */
+.Pop-Up-subtitle {
+    margin: 0 0 10px;
+    color: #cfcfe6;
+    font-weight: 600;
+}
+
 .dropdown-content label {
     display: block;
-    margin-top: 10px;
+    margin-top: 12px;
     font-size: 0.9rem;
+    color: #b8b8c8;
 }
 
 .dropdown-content select {
     width: 100%;
-    padding: 5px;
+    padding: 8px;
+    margin-top: 6px;
+    background-color: #14141c;
+    color: white;
+    border: 1px solid #2c2c38;
+    border-radius: 8px;
 }
 
 .submit-btn {
     width: 100%;
-    margin-top: 15px;
-    background-color: #28a745;
+    margin-top: 14px;
+    background-color: #7b2ff7;
     color: white;
     border: none;
-    padding: 8px;
+    padding: 10px;
+    border-radius: 10px;
     cursor: pointer;
+    font-weight: 700;
+    transition: 0.25s ease;
 }
 
+.submit-btn:hover {
+    background-color: #5d1edb;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
 footer {
-    position: fixed;   
-    bottom: 20px;      
-    left: 20px;        
-    width: auto;       
+    position: fixed;
+    bottom: 18px;
+    left: 18px;
+    width: auto;
 }
 
 .footer-links {
-    display: flex;     
-    gap: 15px;         
+    display: flex;
+    gap: 12px;
     align-items: center;
 }
 
 .footer-links p {
-    margin: 0;         
+    margin: 0;
 }
 
 .footer-links a {
     text-decoration: none;
-    color: #333;       
+    color: #cfcfe6;
     font-size: 0.9rem;
+    transition: 0.2s ease;
 }
 
 .footer-links p:first-child::after {
     content: "|";
-    margin-left: 15px; 
-    color: #ccc;       
+    margin-left: 12px;
+    color: #3a3a4a;
 }
 
 .footer-links a:hover {
-    text-decoration: underline;
+    color: #7b2ff7;
 }
