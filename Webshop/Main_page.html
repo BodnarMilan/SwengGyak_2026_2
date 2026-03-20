@@ -1,70 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <meta charset="UTF-8">
     <title>Webshop</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="style/style-main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">   
-    </head>
+</head>
 
+<body> 
+
+<!-- ================= HEADER ================= -->
 <header class="main-header">
     
-    <!-- BAL OLDAL -->
     <div class="header-left">
         <div class="logo-circle"></div>
         <span class="logo-text">Halo</span>
     </div>
 
-    <!-- KÖZÉP -->
     <div class="header-center">
         <input type="text" placeholder="Search for games, top-ups and more">
     </div>
 
-    <!-- JOBB OLDAL -->
     <div class="header-right">
 
-    <!-- REGIONAL DROPDOWN -->
-    <div class="preferences-dropdown">
-        <button class="dropbtn">Magyar | HUF ▼</button>
+        <div class="preferences-dropdown">
+            <button id="regionDisplay" class="dropbtn">Magyar | HUF ▼</button>
 
-        <div class="dropdown-content">
-            <p class="Pop-Up-subtitle">Select your preferences</p>
+            <div class="dropdown-content">
+                <p class="Pop-Up-subtitle">Select your preferences</p>
 
-            <form class="Pop-Up-form">
-                <label for="language">Language:</label>
-                <select id="language" name="language">
-                    <option value="english">English</option>
-                    <option value="spanish">Spanish</option>
-                    <option value="french">French</option>
-                    <option value="german">German</option>
-                    <option value="hungarian" selected>Hungarian</option>
-                </select>
+                <form class="Pop-Up-form">
+                    <label>Language:</label>
+                    <select id="language">
+                        <option value="hu" selected>Magyar</option>
+                        <option value="en">English</option>
+                    </select>
 
-                <label for="currency">Currency:</label>
-                <select id="currency" name="currency">
-                    <option value="usd">USD</option>
-                    <option value="eur">EUR</option>
-                    <option value="gbp">GBP</option>
-                    <option value="huf" selected>HUF</option>
-                </select>
+                    <label>Currency:</label>
+                    <select id="currency">
+                        <option value="huf" selected>HUF</option>
+                        <option value="eur">EUR</option>
+                    </select>
 
-                <input class="submit-btn" type="submit" value="Save">
-            </form>
+                    <input id="savePreferences" class="submit-btn" type="submit" value="Save">
+                </form>
+            </div>
         </div>
+
+        <span class="icon">♡</span>
+        <span class="icon">🛒</span>
+        <a href="Main_page-login.html" class="login-link">Bejelentkezés | Regisztráció</a>
+
     </div>
 
-    <span class="icon">♡</span>
-    <span class="icon">🛒</span>
-    <a href="Main_page-login.html" class="login-link">Bejelentkezés | Regisztráció</a>
+</header>    
 
-</div>
-
-</header>
-
-<body> 
- <!-- PLATFORM VÁLASZTÁS -->
+<!-- ================= PLATFORM NAV ================= -->
 <nav class="platform-nav">
 
     <a href="#" class="platform-item active">
@@ -96,37 +89,80 @@
         <i class="fa-solid fa-gamepad"></i>
         <span>Nintendo</span>
     </a>
+
 </nav>
 
+<!-- ================= MAIN LAYOUT ================= -->
 <div class="main-layout">
 
-<aside class="genre-sidebar">
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="genre-sidebar">
 
-    <h3>Genres</h3>
+        <h3>Genres</h3>
 
-    <ul>
-        <li class="active">
-            <i class="fa-solid fa-border-all"></i>
-            <span>All Games</span>
-        </li>
+        <ul>
+            <li class="active">
+                <i class="fa-solid fa-border-all"></i>
+                <span>All Games</span>
+            </li>
 
-        <li><i class="fa-solid fa-crosshairs"></i><span>Action</span></li>
-        <li><i class="fa-solid fa-dragon"></i><span>RPG</span></li>
-        <li><i class="fa-solid fa-gun"></i><span>FPS</span></li>
-        <li><i class="fa-solid fa-chess"></i><span>Strategy</span></li>
-        <li><i class="fa-solid fa-futbol"></i><span>Sports</span></li>
-        <li><i class="fa-solid fa-ghost"></i><span>Horror</span></li>
-        <li><i class="fa-solid fa-puzzle-piece"></i><span>Indie</span></li>
-        <li><i class="fa-solid fa-earth-americas"></i><span>Open World</span></li>
-        <li><i class="fa-solid fa-car"></i><span>Racing</span></li>
-        <li><i class="fa-solid fa-users"></i><span>Multiplayer</span></li>
-        <li><i class="fa-solid fa-vr-cardboard"></i><span>VR</span></li>
-    </ul>
+            <li><i class="fa-solid fa-crosshairs"></i><span>Action</span></li>
+            <li><i class="fa-solid fa-dragon"></i><span>RPG</span></li>
+            <li><i class="fa-solid fa-gun"></i><span>FPS</span></li>
+            <li><i class="fa-solid fa-chess"></i><span>Strategy</span></li>
+            <li><i class="fa-solid fa-futbol"></i><span>Sports</span></li>
+            <li><i class="fa-solid fa-ghost"></i><span>Horror</span></li>
+            <li><i class="fa-solid fa-puzzle-piece"></i><span>Indie</span></li>
+            <li><i class="fa-solid fa-earth-americas"></i><span>Open World</span></li>
+            <li><i class="fa-solid fa-car"></i><span>Racing</span></li>
+            <li><i class="fa-solid fa-users"></i><span>Multiplayer</span></li>
+            <li><i class="fa-solid fa-vr-cardboard"></i><span>VR</span></li>
+        </ul>
 
-</aside>
+    </aside>
+
+    <!-- ===== CONTENT AREA ===== -->
+    <section class="content-area">
+
+        <h2 class="section-title">Featured Games</h2>
+
+        <div class="game-grid">
+
+            <div class="game-card">
+                <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/capsule_616x353.jpg?t=1767883716">
+                <div class="game-info">
+                    <h3>Elden Ring</h3>
+                    <p class="platform">Steam</p>
+                    <p class="price">€29.99</p>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/7a4a2467300194840eb2116c2126c2d2422b4e12/capsule_616x353.jpg?t=1773426592">
+                <div class="game-info">
+                    <h3>EA Sports FC 26</h3>
+                    <p class="platform">PlayStation</p>
+                    <p class="price">€39.99</p>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1938090/ced309b03740ccd5f2ea33f58fc2059a2257e235/page_bg_raw.jpg?t=1773859543">
+                <div class="game-info">
+                    <h3>Call of Duty</h3>
+                    <p class="platform">Steam</p>
+                    <p class="price">€19.99</p>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
 
 </div>
 
-</body>
+<!-- ================= SCRIPT ================= -->
+<script src="script/main.js"></script>
 
+</body>
 </html>

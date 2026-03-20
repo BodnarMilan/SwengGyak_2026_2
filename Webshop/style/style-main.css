@@ -191,6 +191,7 @@ body {
     color: #7b2ff7;
 }
 
+
 /* =========================
    PLATFORM NAV
 ========================= */
@@ -217,16 +218,10 @@ body {
     font-size: 0.95rem;
 }
 
-.platform-item i {
-    font-size: 1rem;
-}
-
-/* Hover glow */
 .platform-item:hover {
     color: #7b2ff7;
 }
 
-/* Active */
 .platform-item.active {
     color: white;
 }
@@ -241,7 +236,19 @@ body {
     background: #7b2ff7;
 }
 
-/* ===== SIDEBAR ===== */
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.main-layout {
+    display: flex;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
 
 .genre-sidebar {
     width: 230px;
@@ -265,7 +272,6 @@ body {
     margin: 0;
 }
 
-/* Lista elemek */
 .genre-sidebar li {
     display: flex;
     align-items: center;
@@ -279,20 +285,17 @@ body {
     transition: 0.3s ease;
 }
 
-/* Ikon */
 .genre-sidebar li i {
     width: 18px;
     text-align: center;
     color: #7b2ff7;
 }
 
-/* Hover highlight */
 .genre-sidebar li:hover {
     background-color: #1c1c25;
     color: white;
 }
 
-/* Aktív elem */
 .genre-sidebar li.active {
     background-color: #7b2ff7;
     color: white;
@@ -301,4 +304,76 @@ body {
 
 .genre-sidebar li.active i {
     color: white;
+}
+
+
+/* =========================
+   CONTENT AREA
+========================= */
+
+.content-area {
+    flex: 1;
+    padding: 40px;
+}
+
+.section-title {
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+}
+
+
+/* =========================
+   GAME GRID
+========================= */
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+
+/* =========================
+   GAME CARD
+========================= */
+
+.game-card {
+    background-color: #14141c;
+    border: 1px solid #222;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    border-color: #7b2ff7;
+    box-shadow: 0 0 20px rgba(123, 47, 247, 0.4);
+}
+
+.game-card img {
+    width: 100%;
+    display: block;
+}
+
+.game-info {
+    padding: 12px;
+}
+
+.game-info h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+}
+
+.platform {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.price {
+    margin-top: 8px;
+    font-weight: bold;
+    color: #7b2ff7;
 }
