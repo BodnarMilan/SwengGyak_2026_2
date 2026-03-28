@@ -1,64 +1,163 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { db } from "./firebase-config.js";
+import {
+    doc,
+    getDoc,
+    updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ─────────────────────────────────────────────────────────────
-//  PASTE YOUR FIREBASE CONFIG HERE (same as main.js)
-// ─────────────────────────────────────────────────────────────
-const firebaseConfig = {
-  apiKey: "AIzaSyDBSXTDyFZJiL3AaYOH3zcOCuyuxknlBuQ",
-  authDomain: "swenggyak2026.firebaseapp.com",
-  projectId: "swenggyak2026",
-  storageBucket: "swenggyak2026.firebasestorage.app",
-  messagingSenderId: "61285892844",
-  appId: "1:61285892844:web:ec6458eec13129544d1bc9",
-  measurementId: "G-WX2KJTKN43"
-};
-// ─────────────────────────────────────────────────────────────
+// ── SESSION ───────────────────────────────────────────────────
+const loggedIn = sessionStorage.getItem("loggedIn") === "true";
+const userId   = sessionStorage.getItem("userId");
+const username = sessionStorage.getItem("username");
+const currency = (sessionStorage.getItem("currency") || localStorage.getItem("currency") || "huf").toLowerCase();
 
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
-
-// ── GET GAME ID FROM URL ──────────────────────────────────────
-// e.g. game.html?id=abc123
+// ── URL PARAM ─────────────────────────────────────────────────
 const params = new URLSearchParams(window.location.search);
 const gameId = params.get("id");
 
+// ── AUTH AREA ─────────────────────────────────────────────────
+const authArea = document.getElementById("authArea");
+if (loggedIn && username) {
+    authArea.innerHTML = `
+        <span class="user-greeting">Hi, <strong>${username}</strong></span>
+        <button class="logout-btn" id="logoutBtn">Logout</button>
+    `;
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+        sessionStorage.clear();
+        localStorage.removeItem("cart");
+        window.location.href = "Main_page-login.html";
+    });
+}
+
+// ── CURRENCY HELPERS ──────────────────────────────────────────
+function getPrice(game) {
+    if (currency === "eur") {
+        const p = game.priceEUR ?? game.price;
+        return p != null ? `EUR ${Number(p).toFixed(2)}` : "N/A";
+    } else {
+        const p = game.priceHUF ?? game.price;
+        return p != null ? `${Number(p).toFixed(0)} HUF` : "N/A";
+    }
+}
+
 // ── CART HELPERS ──────────────────────────────────────────────
-function getCart() {
-    return JSON.parse(localStorage.getItem("cart") || "[]");
+async function getCart() {
+    if (!loggedIn || !userId) return [];
+    const snap = await getDoc(doc(db, "users", userId));
+    return snap.exists() ? (snap.data().cart || []) : [];
 }
 
-function saveCart(cart) {
-    localStorage.setItem("cart", JSON.stringify(cart));
+async function saveCart(cart) {
+    if (!loggedIn || !userId) return;
+    await updateDoc(doc(db, "users", userId), { cart });
 }
 
-function addToCart(game) {
-    const cart = getCart();
+async function addToCart(game) {
+    let cart = await getCart();
     const existing = cart.find(item => item.id === game.id);
     if (existing) {
         existing.qty = (existing.qty || 1) + 1;
     } else {
-        cart.push({ id: game.id, title: game.title, price: game.price, currency: game.currency, qty: 1 });
+        cart.push({
+            id:       game.id,
+            title:    game.title,
+            price:    game.price    ?? null,
+            priceEUR: game.priceEUR ?? game.price ?? null,
+            priceHUF: game.priceHUF ?? null,
+            currency: game.currency ?? "EUR",
+            qty:      1
+        });
     }
-    saveCart(cart);
-    updateCartCount();
+    await saveCart(cart);
+    await refreshCart();
     showToast();
 }
 
-function updateCartCount() {
-    const cart = getCart();
-    const total = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
-    const el = document.getElementById("cartCount");
-    if (el) el.textContent = total;
+// ── CART PANEL ────────────────────────────────────────────────
+async function refreshCart() {
+    const cart = await getCart();
+    updateCartCount(cart);
+    renderCartPanel(cart);
 }
 
+function updateCartCount(cart) {
+    const total = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+    const el = document.getElementById("cartCount");
+    if (el) el.textContent = total > 0 ? total : "0";
+}
+
+function renderCartPanel(cart) {
+    const itemsEl = document.getElementById("cartItems");
+    const totalEl = document.getElementById("cartTotal");
+
+    if (!cart || cart.length === 0) {
+        itemsEl.innerHTML = `<p class="cart-empty">Your cart is empty.</p>`;
+        totalEl.textContent = "";
+        return;
+    }
+
+    itemsEl.innerHTML = cart.map(item => {
+        const priceDisplay = currency === "eur"
+            ? `EUR ${Number(item.priceEUR ?? item.price ?? 0).toFixed(2)}`
+            : `${Number(item.priceHUF ?? item.price ?? 0).toFixed(0)} HUF`;
+        return `
+            <div class="cart-item">
+                <span class="cart-item-title">${item.title}</span>
+                <span class="cart-item-qty">x${item.qty || 1}</span>
+                <span class="cart-item-price">${priceDisplay}</span>
+                <button class="cart-item-remove" data-id="${item.id}">✕</button>
+            </div>
+        `;
+    }).join("");
+
+    const total = cart.reduce((sum, item) => {
+        const p = currency === "eur"
+            ? (item.priceEUR ?? item.price ?? 0)
+            : (item.priceHUF ?? item.price ?? 0);
+        return sum + p * (item.qty || 1);
+    }, 0);
+
+    totalEl.textContent = currency === "eur"
+        ? `Total: EUR ${total.toFixed(2)}`
+        : `Total: ${total.toFixed(0)} HUF`;
+
+    // Remove buttons
+    itemsEl.querySelectorAll(".cart-item-remove").forEach(btn => {
+        btn.addEventListener("click", async () => {
+            let cart = await getCart();
+            cart = cart.filter(i => i.id !== btn.dataset.id);
+            await saveCart(cart);
+            updateCartCount(cart);
+            renderCartPanel(cart);
+        });
+    });
+}
+
+// ── CART DROPDOWN TOGGLE ──────────────────────────────────────
+const cartDropdown = document.getElementById("cartDropdown");
+const cartBtn      = document.getElementById("cartBtn");
+const cartPanel    = document.getElementById("cartPanel");
+
+cartBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    cartPanel.classList.toggle("open");
+});
+
+document.addEventListener("click", (e) => {
+    if (!cartDropdown.contains(e.target)) {
+        cartPanel.classList.remove("open");
+    }
+});
+
+// ── TOAST ─────────────────────────────────────────────────────
 function showToast() {
     const toast = document.getElementById("cartToast");
+    if (!toast) return;
     toast.classList.add("show");
     setTimeout(() => toast.classList.remove("show"), 2500);
 }
 
-// ── RENDER SPEC ROWS ─────────────────────────────────────────
+// ── RENDER SPEC ROW ───────────────────────────────────────────
 function specRow(label, value) {
     if (!value) return "";
     return `
@@ -68,27 +167,25 @@ function specRow(label, value) {
         </div>`;
 }
 
-// ── RENDER PAGE ───────────────────────────────────────────────
+// ── RENDER GAME PAGE ──────────────────────────────────────────
 function renderGame(game) {
     const page = document.getElementById("gamePage");
 
-    const displayPrice = game.currency && game.price != null
-        ? `${game.currency} ${Number(game.price).toFixed(2)}`
-        : "N/A";
+    const displayPrice = getPrice(game);
 
     const genres = Array.isArray(game.genre)
-        ? game.genre.map(g => `<span class="genre-tag">${g}</span>`).join("")
-        : "";
+        ? game.genre.map(g => `<span class="genre-tag">${g}</span>`).join("") : "";
 
     const platforms = Array.isArray(game.platform)
-        ? game.platform.map(p => `<span class="platform-tag">${p}</span>`).join("")
-        : "";
+        ? game.platform.map(p => `<span class="platform-tag">${p}</span>`).join("") : "";
 
-    const min  = game.specs?.minimum  || {};
-    const rec  = game.specs?.recommended || {};
+    const min = game.specs?.minimum     || {};
+    const rec = game.specs?.recommended || {};
+
+    const description = (game.description || "No description available.")
+        .replace(/\n/g, "<br>");
 
     page.innerHTML = `
-        <!-- HERO -->
         <div class="game-hero">
             <img class="game-cover" src="${game.image}" alt="${game.title}">
 
@@ -99,26 +196,29 @@ function renderGame(game) {
                 <div class="genre-tags">${genres}</div>
                 <div class="platform-tags">${platforms}</div>
 
-                <button class="btn-add-cart" id="btnAddCart">
-                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
-                </button>
-                <button class="btn-buy-now" id="btnBuyNow">
-                    <i class="fa-solid fa-bolt"></i> Buy Now
-                </button>
+                ${loggedIn ? `
+                    <button class="btn-add-cart" id="btnAddCart">
+                        <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                    </button>
+                    <button class="btn-buy-now" id="btnBuyNow">
+                        <i class="fa-solid fa-bolt"></i> Buy Now
+                    </button>
+                ` : `
+                    <p class="login-to-buy">
+                        <a href="Main_page-login.html">Login</a> to purchase this game.
+                    </p>
+                `}
             </div>
         </div>
 
-        <!-- DESCRIPTION -->
         <div class="game-info-section">
             <h3 class="section-heading">About this game</h3>
-            <p class="game-description">${(game.description || "No description available.").replace(/\n/g, "<br>")}</p>
+            <p class="game-description">${description}</p>
         </div>
 
-        <!-- SPECS -->
         <div class="game-info-section">
             <h3 class="section-heading">System Requirements</h3>
             <div class="specs-grid">
-
                 <div class="specs-box">
                     <h4>Minimum</h4>
                     ${specRow("OS",        min.os)}
@@ -128,7 +228,6 @@ function renderGame(game) {
                     ${specRow("Storage",   min.storage)}
                     ${specRow("DirectX",   min.directx)}
                 </div>
-
                 <div class="specs-box">
                     <h4>Recommended</h4>
                     ${specRow("OS",        rec.os)}
@@ -138,42 +237,34 @@ function renderGame(game) {
                     ${specRow("Storage",   rec.storage)}
                     ${specRow("DirectX",   rec.directx)}
                 </div>
-
             </div>
         </div>
     `;
 
-    // Update page title
     document.title = `${game.title} – Halo`;
 
-    // Button listeners
-    document.getElementById("btnAddCart").addEventListener("click", () => {
-        addToCart(game);
-    });
-
-    document.getElementById("btnBuyNow").addEventListener("click", () => {
-        addToCart(game);
-        window.location.href = "page_under_development.html";
-    });
+    if (loggedIn) {
+        document.getElementById("btnAddCart").addEventListener("click", () => addToCart(game));
+        document.getElementById("btnBuyNow").addEventListener("click", async () => {
+            await addToCart(game);
+            window.location.href = "page_under_development.html";
+        });
+    }
 }
 
-// ── FETCH GAME FROM FIRESTORE ─────────────────────────────────
+// ── FETCH GAME ────────────────────────────────────────────────
 async function fetchGame() {
     if (!gameId) {
         document.getElementById("loadingMsg").textContent = "No game specified.";
         return;
     }
-
     try {
         const snap = await getDoc(doc(db, "games", gameId));
-
         if (!snap.exists()) {
             document.getElementById("loadingMsg").textContent = "Game not found.";
             return;
         }
-
-        const game = { id: snap.id, ...snap.data() };
-        renderGame(game);
+        renderGame({ id: snap.id, ...snap.data() });
     } catch (err) {
         document.getElementById("loadingMsg").textContent = "Failed to load game.";
         console.error(err);
@@ -181,8 +272,9 @@ async function fetchGame() {
 }
 
 // ── REGION PREFERENCES ────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", () => {
-    updateCartCount();
+document.addEventListener("DOMContentLoaded", async () => {
+    // Load cart count + panel on page open
+    await refreshCart();
 
     const languageSelect = document.getElementById("language");
     const currencySelect = document.getElementById("currency");

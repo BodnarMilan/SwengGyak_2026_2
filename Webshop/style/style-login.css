@@ -57,12 +57,12 @@ body {
 }
 
 /* =========================
-   LOGIN BOX
+   LOGIN / REGISTER BOX
 ========================= */
 
 .login-container {
     width: 340px;
-    margin: 18px auto 0;
+    margin: 18px auto 60px;
     padding: 22px 22px 18px;
     background-color: #14141c;
     border: 1px solid #222;
@@ -88,6 +88,7 @@ body {
 
 /* Inputs */
 .login-container input[type="text"],
+.login-container input[type="email"],
 .login-container input[type="password"] {
     width: 100%;
     height: 40px;
@@ -108,6 +109,12 @@ body {
 .login-container input:focus {
     border-color: #7b2ff7;
     box-shadow: 0 0 10px rgba(123, 47, 247, 0.45);
+}
+
+/* Red outline for duplicate/invalid fields */
+.login-container input.input-error {
+    border-color: #e05555 !important;
+    box-shadow: 0 0 8px rgba(224, 85, 85, 0.4) !important;
 }
 
 /* Password row */
@@ -139,7 +146,7 @@ body {
     color: #ffffff;
 }
 
-/* Login button */
+/* Login / Register button */
 .login-btn {
     margin-top: 16px;
     width: 100%;
@@ -150,6 +157,7 @@ body {
     border-radius: 10px;
     cursor: pointer;
     font-weight: 700;
+    font-size: 0.95rem;
     transition: 0.25s ease;
 }
 
@@ -158,10 +166,82 @@ body {
     box-shadow: 0 0 12px rgba(123, 47, 247, 0.45);
 }
 
+.login-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 hr {
     border: none;
     border-top: 1px solid #222;
     margin: 16px 0 0;
+}
+
+/* =========================
+   ERROR & SUCCESS MESSAGES
+========================= */
+
+/* Per-field inline error (below the input) */
+.field-error {
+    font-size: 0.8rem;
+    color: #e07070;
+    min-height: 16px;
+    margin-top: 4px;
+}
+
+/* General form-level error */
+.error-msg {
+    font-size: 0.85rem;
+    color: #e07070;
+    background-color: #2e0d0d;
+    border: 1px solid #6e2020;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-top: 12px;
+    display: none;
+}
+
+.error-msg.visible {
+    display: block;
+}
+
+/* Success message */
+.success-msg {
+    font-size: 0.85rem;
+    color: #4caf7d;
+    background-color: #0d2e1a;
+    border: 1px solid #1a6636;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-top: 12px;
+    display: none;
+}
+
+.success-msg.visible {
+    display: block;
+}
+
+/* =========================
+   REGISTER PROMPT
+========================= */
+
+.register-prompt {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 0.88rem;
+    color: #888;
+}
+
+.register-link {
+    color: #7b2ff7;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.register-link:hover {
+    color: #9b5cff;
+    text-decoration: underline;
 }
 
 /* =========================
@@ -189,7 +269,6 @@ hr {
     box-shadow: 0 0 10px rgba(123, 47, 247, 0.35);
 }
 
-/* dropdown panel */
 .dropdown-content {
     opacity: 0;
     visibility: hidden;
