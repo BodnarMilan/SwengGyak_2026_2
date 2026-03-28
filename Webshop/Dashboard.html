@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="logo">Halo</div>
+
+      <nav class="menu">
+        <div class="menu-section">
+          <p class="menu-title">My account</p>
+          <a href="#" class="menu-item active-link">Áttekintés</a>
+          <a href="#" class="menu-item">Bejelentkezési előzmények</a>
+          <a href="#" class="menu-item">Kedvenc elemek</a>
+        </div>
+
+        <div class="menu-section">
+          <p class="menu-title">Fiók</p>
+          <a href="#" class="menu-item">Egyenleg</a>
+          <a href="#" class="menu-item">Rendelések</a>
+          <a href="#" class="menu-item">Keys library</a>
+          <a href="#" class="menu-item">Settings</a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <input type="text" class="top-search" placeholder="Keresés a fiókban..." />
+        </div>
+
+        <div class="topbar-right">
+          <button class="topbar-chip">Pénztárca</button>
+          <span class="balance">1384,12 Ft</span>
+          <div class="avatar">M</div>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="breadcrumb">My account / áttekintés</div>
+        <h1>ÁTTEKINTÉS</h1>
+
+        <div class="overview-grid">
+          <section class="card profile-card">
+            <div class="section-head">
+              <h2>PROFIL</h2>
+              <button class="ghost-btn">Szerkesztés</button>
+            </div>
+
+            <div class="profile-header">
+              <div class="profile-left">
+                <div class="profile-avatar">M</div>
+                <div class="profile-meta">
+                  <div class="profile-name"></div>
+                  <div class="profile-email"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="progress-block">
+              <div class="progress-row">
+                <span class="progress-label">Profil készültség</span>
+                <span class="progress-value">0%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill"></div>
+             
+
+            <div class="quick-actions">
+              <button class="action-btn">Profil kitöltése</button>
+              <button class="action-btn">E-mail megerősítés</button>
+              <button class="action-btn">Biztonság</button>
+            </div>
+          </section>
+
+          <section class="card purchases-card">
+  <h2>LEGUTÓBBI VÁSÁRLÁSOK</h2> <br> <br>
+
+  <div class="games">
+  <div class="game-card">
+    <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/capsule_616x353.jpg?t=1767883716" alt="Elden Ring">
+    <h3>Elden Ring</h3>
+  </div>
+
+  <div class="game-card">
+    <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/7a4a2467300194840eb2116c2126c2d2422b4e12/capsule_616x353.jpg?t=1773426592" alt="EA Sports FC 26">
+    <h3>EA Sports FC 26</h3>
+  </div>
+
+  <div class="game-card">
+    <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1938090/ced309b03740ccd5f2ea33f58fc2059a2257e235/page_bg_raw.jpg?t=1773859543" alt="Call of Duty">
+    <h3>Call of Duty</h3>
+  </div>
+</div>
+
+  <button class="library-btn" type="button">View keys library</button>
+</section>
+
+          <section class="card wallet-card">
+            <div class="section-head">
+              <h2>PÉNZTÁRCA</h2>
+              <a href="#" class="text-link">Részletek</a>
+            </div>
+
+            <div class="big-balance">1384,12 Ft</div>
+            <p class="muted-text">
+              Az elérhető egyenleg.
+            </p>
+
+            <div class="wallet-actions">
+              <button class="primary-btn">Feltöltés</button>
+              <button class="ghost-btn">Áttekintés</button>
+            </div>
+          </section>
+
+          <section class="card balances-card">
+            <h2>EGYENLEG TÍPUSOK</h2>
+
+            <div class="small-balance-list">
+              <div class="small-balance-item">
+                <div>
+                  <strong>AJÁNDÉKKÁRTYA EGYENLEG</strong>
+                  <p>Csak gift card vásárlásokhoz</p>
+                </div>
+                <div class="item-right">
+                  <span>2000</span>
+                  <button>+</button>
+                </div>
+              </div>
+
+              <div class="small-balance-item">
+                <div>
+                  <strong>CASHBACK</strong>
+                  <p>Kedvezményekhez és részfizetéshez</p>
+                </div>
+                <div class="item-right">
+                  <span>1384,12 Ft</span>
+                  <button>→</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-columns">
+          <div>
+            <h4>Fiók</h4>
+            <a href="#">Áttekintés</a>
+            <a href="#">Rendelések</a>
+            <a href="#">Beállítások</a>
+          </div>
+          <div>
+            <h4>Vásárlás</h4>
+            <a href="#">Ajándékkártyák</a>
+            <a href="#">Akciók</a>
+            <a href="#">Kulcsok</a>
+          </div>
+          <div>
+            <h4>Súgó</h4>
+            <a href="#">GYIK</a>
+            <a href="#">Kapcsolat</a>
+            <a href="#">Támogatás</a>
+          </div>
+          <div>
+            <h4>Közösség</h4>
+            <a href="#">Discord</a>
+            <a href="#">Hírek</a>
+            <a href="#">Ajánlatok</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

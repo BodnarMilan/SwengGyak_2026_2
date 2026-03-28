@@ -1,0 +1,380 @@
+
+/* =========================
+   GLOBAL
+========================= */
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #0f0f14;
+    color: white;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.main-header {
+    background-color: #14141c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 50px;
+    border-bottom: 1px solid #222;
+}
+
+
+/* =========================
+   LEFT SIDE (LOGO)
+========================= */
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-circle {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(45deg, #7b2ff7, #00c6ff);
+    border-radius: 50%;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+
+/* =========================
+   SEARCH BAR
+========================= */
+
+.header-center input {
+    width: 450px;
+    padding: 11px 15px;
+    background-color: #1c1c25;
+    border: 1px solid #2c2c38;
+    border-radius: 6px;
+    color: white;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.header-center input::placeholder {
+    color: #777;
+}
+
+.header-center input:focus {
+    border-color: #7b2ff7;
+    box-shadow: 0 0 10px rgba(123, 47, 247, 0.6);
+}
+
+
+/* =========================
+   RIGHT SIDE
+========================= */
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+
+/* =========================
+   DROPDOWN (REGION)
+========================= */
+
+.preferences-dropdown {
+    position: relative;
+}
+
+.dropbtn {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.dropbtn:hover {
+    color: #7b2ff7;
+}
+
+.dropdown-content {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.25s ease;
+
+    position: absolute;
+    right: 0;
+    margin-top: 12px;
+    width: 240px;
+
+    background-color: #1c1c25;
+    border: 1px solid #2c2c38;
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+    z-index: 100;
+}
+
+.preferences-dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-content label {
+    display: block;
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+.dropdown-content select {
+    width: 100%;
+    margin-top: 5px;
+    padding: 6px;
+    background-color: #14141c;
+    color: white;
+    border: 1px solid #2c2c38;
+    border-radius: 4px;
+}
+
+.submit-btn {
+    width: 100%;
+    margin-top: 18px;
+    padding: 8px;
+    background-color: #7b2ff7;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #5d1edb;
+}
+
+
+/* =========================
+   ICONS & LOGIN
+========================= */
+
+.icon {
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.icon:hover {
+    color: #7b2ff7;
+}
+
+.login-link {
+    text-decoration: none;
+    font-weight: 600;
+    color: white;
+    transition: 0.3s;
+}
+
+.login-link:hover {
+    color: #7b2ff7;
+}
+
+
+/* =========================
+   PLATFORM NAV
+========================= */
+
+.platform-nav {
+    background-color: #101018;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 14px 0;
+    border-bottom: 1px solid #222;
+}
+
+.platform-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #bbb;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: 0.3s;
+    position: relative;
+    font-size: 0.95rem;
+}
+
+.platform-item:hover {
+    color: #7b2ff7;
+}
+
+.platform-item.active {
+    color: white;
+}
+
+.platform-item.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 2px;
+    background: #7b2ff7;
+}
+
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.main-layout {
+    display: flex;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.genre-sidebar {
+    width: 230px;
+    background-color: #14141c;
+    border-right: 1px solid #222;
+    padding: 25px 20px;
+    min-height: 100vh;
+}
+
+.genre-sidebar h3 {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.genre-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.genre-sidebar li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    color: #bbb;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    transition: 0.3s ease;
+}
+
+.genre-sidebar li i {
+    width: 18px;
+    text-align: center;
+    color: #7b2ff7;
+}
+
+.genre-sidebar li:hover {
+    background-color: #1c1c25;
+    color: white;
+}
+
+.genre-sidebar li.active {
+    background-color: #7b2ff7;
+    color: white;
+    font-weight: 600;
+}
+
+.genre-sidebar li.active i {
+    color: white;
+}
+
+
+/* =========================
+   CONTENT AREA
+========================= */
+
+.content-area {
+    flex: 1;
+    padding: 40px;
+}
+
+.section-title {
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+}
+
+
+/* =========================
+   GAME GRID
+========================= */
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+
+/* =========================
+   GAME CARD
+========================= */
+
+.game-card {
+    background-color: #14141c;
+    border: 1px solid #222;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    border-color: #7b2ff7;
+    box-shadow: 0 0 20px rgba(123, 47, 247, 0.4);
+}
+
+.game-card img {
+    width: 100%;
+    display: block;
+}
+
+.game-info {
+    padding: 12px;
+}
+
+.game-info h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+}
+
+.platform {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.price {
+    margin-top: 8px;
+    font-weight: bold;
+    color: #7b2ff7;
+}
