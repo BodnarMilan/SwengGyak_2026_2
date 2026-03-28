@@ -9,6 +9,10 @@ body {
     color: white;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
 /* =========================
    HEADER
@@ -131,6 +135,12 @@ body {
     transform: translateY(0);
 }
 
+.Pop-Up-subtitle {
+    margin: 0 0 10px;
+    color: #cfcfe6;
+    font-weight: 600;
+}
+
 .dropdown-content label {
     display: block;
     margin-top: 12px;
@@ -181,7 +191,6 @@ body {
 }
 
 .login-link {
-    text-decoration: none;
     font-weight: 600;
     color: white;
     transition: 0.3s;
@@ -323,6 +332,17 @@ body {
 
 
 /* =========================
+   LOADING MESSAGE
+========================= */
+
+.loading-msg {
+    color: #888;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+
+/* =========================
    GAME GRID
 ========================= */
 
@@ -335,15 +355,19 @@ body {
 
 /* =========================
    GAME CARD
+   (works as both <div> and <a>)
 ========================= */
 
 .game-card {
+    display: block;                /* so <a> behaves like a block */
     background-color: #14141c;
     border: 1px solid #222;
     border-radius: 12px;
     overflow: hidden;
     cursor: pointer;
     transition: 0.3s ease;
+    color: inherit;                /* prevent <a> from turning text blue */
+    text-decoration: none;
 }
 
 .game-card:hover {
@@ -355,6 +379,8 @@ body {
 .game-card img {
     width: 100%;
     display: block;
+    aspect-ratio: 616 / 353;
+    object-fit: cover;
 }
 
 .game-info {
@@ -362,14 +388,14 @@ body {
 }
 
 .game-info h3 {
-    margin: 0;
+    margin: 0 0 6px;
     font-size: 0.95rem;
-    margin-bottom: 6px;
 }
 
 .platform {
     font-size: 0.8rem;
     color: #888;
+    text-transform: capitalize;
 }
 
 .price {

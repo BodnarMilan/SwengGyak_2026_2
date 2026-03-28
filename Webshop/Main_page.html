@@ -2,25 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Webshop</title>
+    <title>Halo – Game Store</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="style/style-main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
-<body> 
+<body>
 
 <!-- ================= HEADER ================= -->
 <header class="main-header">
-    
+
     <div class="header-left">
         <div class="logo-circle"></div>
         <span class="logo-text">Halo</span>
     </div>
 
     <div class="header-center">
-        <input type="text" placeholder="Search for games, top-ups and more">
+        <input type="text" id="searchInput" placeholder="Search for games, top-ups and more">
     </div>
 
     <div class="header-right">
@@ -55,37 +54,37 @@
 
     </div>
 
-</header>    
+</header>
 
 <!-- ================= PLATFORM NAV ================= -->
 <nav class="platform-nav">
 
-    <a href="#" class="platform-item active">
+    <a href="#" class="platform-item active" data-platform="all">
         <i class="fa-solid fa-border-all"></i>
         <span>All</span>
     </a>
 
-    <a href="#" class="platform-item">
+    <a href="#" class="platform-item" data-platform="pc">
         <i class="fa-brands fa-windows"></i>
         <span>PC</span>
     </a>
 
-    <a href="#" class="platform-item">
+    <a href="#" class="platform-item" data-platform="steam">
         <i class="fa-brands fa-steam"></i>
         <span>Steam</span>
     </a>
 
-    <a href="#" class="platform-item">
+    <a href="#" class="platform-item" data-platform="playstation">
         <i class="fa-brands fa-playstation"></i>
         <span>PlayStation</span>
     </a>
 
-    <a href="#" class="platform-item">
+    <a href="#" class="platform-item" data-platform="xbox">
         <i class="fa-brands fa-xbox"></i>
         <span>Xbox</span>
     </a>
 
-    <a href="#" class="platform-item">
+    <a href="#" class="platform-item" data-platform="nintendo">
         <i class="fa-solid fa-gamepad"></i>
         <span>Nintendo</span>
     </a>
@@ -101,22 +100,21 @@
         <h3>Genres</h3>
 
         <ul>
-            <li class="active">
+            <li class="active" data-genre="all">
                 <i class="fa-solid fa-border-all"></i>
                 <span>All Games</span>
             </li>
-
-            <li><i class="fa-solid fa-crosshairs"></i><span>Action</span></li>
-            <li><i class="fa-solid fa-dragon"></i><span>RPG</span></li>
-            <li><i class="fa-solid fa-gun"></i><span>FPS</span></li>
-            <li><i class="fa-solid fa-chess"></i><span>Strategy</span></li>
-            <li><i class="fa-solid fa-futbol"></i><span>Sports</span></li>
-            <li><i class="fa-solid fa-ghost"></i><span>Horror</span></li>
-            <li><i class="fa-solid fa-puzzle-piece"></i><span>Indie</span></li>
-            <li><i class="fa-solid fa-earth-americas"></i><span>Open World</span></li>
-            <li><i class="fa-solid fa-car"></i><span>Racing</span></li>
-            <li><i class="fa-solid fa-users"></i><span>Multiplayer</span></li>
-            <li><i class="fa-solid fa-vr-cardboard"></i><span>VR</span></li>
+            <li data-genre="action"><i class="fa-solid fa-crosshairs"></i><span>Action</span></li>
+            <li data-genre="rpg"><i class="fa-solid fa-dragon"></i><span>RPG</span></li>
+            <li data-genre="fps"><i class="fa-solid fa-gun"></i><span>FPS</span></li>
+            <li data-genre="strategy"><i class="fa-solid fa-chess"></i><span>Strategy</span></li>
+            <li data-genre="sports"><i class="fa-solid fa-futbol"></i><span>Sports</span></li>
+            <li data-genre="horror"><i class="fa-solid fa-ghost"></i><span>Horror</span></li>
+            <li data-genre="indie"><i class="fa-solid fa-puzzle-piece"></i><span>Indie</span></li>
+            <li data-genre="open-world"><i class="fa-solid fa-earth-americas"></i><span>Open World</span></li>
+            <li data-genre="racing"><i class="fa-solid fa-car"></i><span>Racing</span></li>
+            <li data-genre="multiplayer"><i class="fa-solid fa-users"></i><span>Multiplayer</span></li>
+            <li data-genre="vr"><i class="fa-solid fa-vr-cardboard"></i><span>VR</span></li>
         </ul>
 
     </aside>
@@ -126,35 +124,8 @@
 
         <h2 class="section-title">Featured Games</h2>
 
-        <div class="game-grid">
-
-            <div class="game-card">
-                <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/capsule_616x353.jpg?t=1767883716">
-                <div class="game-info">
-                    <h3>Elden Ring</h3>
-                    <p class="platform">Steam</p>
-                    <p class="price">€29.99</p>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/7a4a2467300194840eb2116c2126c2d2422b4e12/capsule_616x353.jpg?t=1773426592">
-                <div class="game-info">
-                    <h3>EA Sports FC 26</h3>
-                    <p class="platform">PlayStation</p>
-                    <p class="price">€39.99</p>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1938090/ced309b03740ccd5f2ea33f58fc2059a2257e235/page_bg_raw.jpg?t=1773859543">
-                <div class="game-info">
-                    <h3>Call of Duty</h3>
-                    <p class="platform">Steam</p>
-                    <p class="price">€19.99</p>
-                </div>
-            </div>
-
+        <div class="game-grid" id="gameGrid">
+            <p class="loading-msg">Loading games...</p>
         </div>
 
     </section>
@@ -162,7 +133,7 @@
 </div>
 
 <!-- ================= SCRIPT ================= -->
-<script src="script/main.js"></script>
+<script type="module" src="script/main.js"></script>
 
 </body>
 </html>
