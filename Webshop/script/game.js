@@ -19,7 +19,7 @@ const gameId = params.get("id");
 const authArea = document.getElementById("authArea");
 if (loggedIn && username) {
     authArea.innerHTML = `
-        <span class="user-greeting">Hi, <strong>${username}</strong></span>
+        <span class="user-greeting">Hi, <a href="Dashboard.html" class="username-link"><strong>${username}</strong></a></span>
         <button class="logout-btn" id="logoutBtn">Logout</button>
     `;
     document.getElementById("logoutBtn").addEventListener("click", () => {
@@ -247,7 +247,7 @@ function renderGame(game) {
         document.getElementById("btnAddCart").addEventListener("click", () => addToCart(game));
         document.getElementById("btnBuyNow").addEventListener("click", async () => {
             await addToCart(game);
-            window.location.href = "page_under_development.html";
+            window.location.href = "checkout.html";
         });
     }
 }
@@ -308,3 +308,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // ── INIT ──────────────────────────────────────────────────────
 fetchGame();
+
+// ── CHECKOUT BUTTON GUARD ─────────────────────────────────────
+async function goToCheckout() {
+    const cart = await getCart();
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+    window.location.href = "checkout.html";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    if (checkoutBtn) checkoutBtn.addEventListener("click", goToCheckout);
+});

@@ -302,6 +302,7 @@ a { text-decoration: none; }
 
 .cart-checkout-btn {
     display: block;
+    width: 100%;
     text-align: center;
     background-color: #7b2ff7;
     color: white;
@@ -309,7 +310,10 @@ a { text-decoration: none; }
     font-size: 0.9rem;
     padding: 10px;
     border-radius: 8px;
+    border: none;
+    cursor: pointer;
     transition: 0.25s ease;
+    font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 .cart-checkout-btn:hover {
@@ -603,4 +607,19 @@ a { text-decoration: none; }
     .purchase-panel { position: static; }
     .specs-grid { grid-template-columns: 1fr; }
     .main-header { flex-wrap: wrap; padding: 12px 20px; gap: 12px; }
+}
+
+/* =========================
+   USERNAME DASHBOARD LINK
+========================= */
+
+.username-link {
+    color: #fff;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.username-link:hover {
+    color: #b266ff;
+    text-decoration: underline;
 }

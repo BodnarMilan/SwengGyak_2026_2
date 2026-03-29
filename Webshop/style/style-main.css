@@ -316,6 +316,7 @@ a {
 
 .cart-checkout-btn {
     display: block;
+    width: 100%;
     text-align: center;
     background-color: #7b2ff7;
     color: white;
@@ -323,7 +324,10 @@ a {
     font-size: 0.9rem;
     padding: 10px;
     border-radius: 8px;
+    border: none;
+    cursor: pointer;
     transition: 0.25s ease;
+    font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 .cart-checkout-btn:hover {
@@ -555,4 +559,19 @@ a {
     margin-top: 8px;
     font-weight: bold;
     color: #7b2ff7;
+}
+
+/* =========================
+   USERNAME DASHBOARD LINK
+========================= */
+
+.username-link {
+    color: #fff;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.username-link:hover {
+    color: #b266ff;
+    text-decoration: underline;
 }

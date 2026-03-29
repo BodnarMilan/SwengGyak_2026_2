@@ -17,7 +17,7 @@ const currency = (sessionStorage.getItem("currency") || localStorage.getItem("cu
 const authArea = document.getElementById("authArea");
 if (loggedIn && username) {
     authArea.innerHTML = `
-        <span class="user-greeting">Hi, <strong>${username}</strong></span>
+        <span class="user-greeting">Hi, <a href="Dashboard.html" class="username-link"><strong>${username}</strong></a></span>
         <button class="logout-btn" id="logoutBtn">Logout</button>
     `;
     document.getElementById("logoutBtn").addEventListener("click", () => {
@@ -296,3 +296,23 @@ document.addEventListener("DOMContentLoaded", () => {
 // ── INIT ──────────────────────────────────────────────────────
 fetchGames();
 loadCart();
+
+// ── CHECKOUT BUTTON GUARD ─────────────────────────────────────
+async function goToCheckout() {
+    if (!loggedIn || !userId) {
+        window.location.href = "Main_page-login.html";
+        return;
+    }
+    const snap = await getDoc(doc(db, "users", userId));
+    const cart = snap.exists() ? (snap.data().cart || []) : [];
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+    window.location.href = "checkout.html";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    if (checkoutBtn) checkoutBtn.addEventListener("click", goToCheckout);
+});

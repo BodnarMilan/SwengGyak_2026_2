@@ -1,189 +1,332 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard</title>
+  <title>Dashboard – Halo</title>
   <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="logo">Halo</div>
 
-      <nav class="menu">
-        <div class="menu-section">
-          <p class="menu-title">My account</p>
-          <a href="#" class="menu-item active-link">Áttekintés</a>
-          <a href="#" class="menu-item">Bejelentkezési előzmények</a>
-          <a href="#" class="menu-item">Kedvenc elemek</a>
-        </div>
+<div class="layout">
 
-        <div class="menu-section">
-          <p class="menu-title">Fiók</p>
-          <a href="#" class="menu-item">Egyenleg</a>
-          <a href="#" class="menu-item">Rendelések</a>
-          <a href="#" class="menu-item">Keys library</a>
-          <a href="#" class="menu-item">Settings</a>
-        </div>
-      </nav>
-    </aside>
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <a href="Main_page.html" class="logo" style="text-decoration:none;">Halo</a>
 
-    <div class="main-wrapper">
-      <header class="topbar">
-        <div class="topbar-left">
-          <input type="text" class="top-search" placeholder="Keresés a fiókban..." />
-        </div>
+    <nav class="menu">
+      <div class="menu-section">
+        <p class="menu-title">My Account</p>
+        <a href="Dashboard.html" class="menu-item active-link">
+          <i class="fa-solid fa-house"></i> Overview
+        </a>
+        <a href="#" class="menu-item">
+          <i class="fa-solid fa-clock-rotate-left"></i> Login History
+        </a>
+        <a href="#" class="menu-item">
+          <i class="fa-regular fa-heart"></i> Wishlist
+        </a>
+      </div>
 
-        <div class="topbar-right">
-          <button class="topbar-chip">Pénztárca</button>
-          <span class="balance">1384,12 Ft</span>
-          <div class="avatar">M</div>
-        </div>
-      </header>
+      <div class="menu-section">
+        <p class="menu-title">Account</p>
+        <a href="#" class="menu-item">
+          <i class="fa-solid fa-wallet"></i> Wallet
+        </a>
+        <a href="#" class="menu-item">
+          <i class="fa-solid fa-bag-shopping"></i> Orders
+        </a>
+        <a href="#" class="menu-item">
+          <i class="fa-solid fa-key"></i> Keys Library
+        </a>
+        <a href="#" class="menu-item">
+          <i class="fa-solid fa-gear"></i> Settings
+        </a>
+      </div>
 
-      <main class="content">
-        <div class="breadcrumb">My account / áttekintés</div>
-        <h1>ÁTTEKINTÉS</h1>
+      <div class="menu-section" style="margin-top: auto; padding-top: 20px;">
+        <button class="menu-item logout-sidebar" id="logoutBtn" style="background:none;border:none;cursor:pointer;width:100%;text-align:left;">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </nav>
+  </aside>
 
-        <div class="overview-grid">
-          <section class="card profile-card">
-            <div class="section-head">
-              <h2>PROFIL</h2>
-              <button class="ghost-btn">Szerkesztés</button>
+  <!-- ===== MAIN WRAPPER ===== -->
+  <div class="main-wrapper">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <input type="text" class="top-search" placeholder="Search your account..." />
+      </div>
+      <div class="topbar-right">
+        <a href="Main_page.html" class="topbar-chip" style="text-decoration:none;">← Back to Store</a>
+        <div class="avatar" id="avatarInitial">?</div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="content">
+      <div class="breadcrumb">My account / Overview</div>
+      <h1 id="dashTitle">OVERVIEW</h1>
+
+      <div class="overview-grid">
+
+        <!-- PROFILE CARD -->
+        <section class="card profile-card">
+          <div class="section-head">
+            <h2>PROFILE</h2>
+            <button class="ghost-btn">Edit</button>
+          </div>
+
+          <div class="profile-header">
+            <div class="profile-left">
+              <div class="profile-avatar" id="profileInitial">?</div>
+              <div class="profile-meta">
+                <div class="profile-name" id="profileName">Loading...</div>
+                <div class="profile-email" id="profileEmail"></div>
+              </div>
             </div>
+          </div>
 
-            <div class="profile-header">
-              <div class="profile-left">
-                <div class="profile-avatar">M</div>
-                <div class="profile-meta">
-                  <div class="profile-name"></div>
-                  <div class="profile-email"></div>
-                </div>
+          <div class="progress-block">
+            <div class="progress-row">
+              <span class="progress-label">Profile completion</span>
+              <span class="progress-value" id="progressValue">0%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div class="completed" id="completedMsg"></div>
+
+          <div class="quick-actions" style="margin-top:16px;">
+            <button class="action-btn">Edit Profile</button>
+            <button class="action-btn">Security</button>
+          </div>
+        </section>
+
+        <!-- RECENT PURCHASES -->
+        <section class="card purchases-card">
+          <div class="section-head">
+            <h2>RECENT PURCHASES</h2>
+            <a href="#" class="text-link">View all</a>
+          </div>
+
+          <div class="games" id="recentPurchases">
+            <p class="muted-text">No purchases yet.</p>
+          </div>
+
+          <button class="library-btn" type="button" style="margin-top:16px;">
+            View Keys Library
+          </button>
+        </section>
+
+        <!-- WALLET -->
+        <section class="card wallet-card">
+          <div class="section-head">
+            <h2>WALLET</h2>
+            <a href="#" class="text-link">Details</a>
+          </div>
+          <div class="big-balance">0.00 EUR</div>
+          <p class="muted-text">Your available balance.</p>
+          <div class="wallet-actions">
+            <button class="primary-btn">Top Up</button>
+            <button class="ghost-btn">Overview</button>
+          </div>
+        </section>
+
+        <!-- ACCOUNT INFO -->
+        <section class="card balances-card">
+          <h2>ACCOUNT INFO</h2>
+          <div class="small-balance-list">
+
+            <div class="small-balance-item">
+              <div>
+                <strong>LANGUAGE</strong>
+                <p id="infoLanguage">–</p>
               </div>
             </div>
 
-            <div class="progress-block">
-              <div class="progress-row">
-                <span class="progress-label">Profil készültség</span>
-                <span class="progress-value">0%</span>
+            <div class="small-balance-item">
+              <div>
+                <strong>CURRENCY</strong>
+                <p id="infoCurrency">–</p>
               </div>
-              <div class="progress-bar">
-                <div class="progress-fill"></div>
-             
-
-            <div class="quick-actions">
-              <button class="action-btn">Profil kitöltése</button>
-              <button class="action-btn">E-mail megerősítés</button>
-              <button class="action-btn">Biztonság</button>
             </div>
-          </section>
 
-          <section class="card purchases-card">
-  <h2>LEGUTÓBBI VÁSÁRLÁSOK</h2> <br> <br>
+            <div class="small-balance-item">
+              <div>
+                <strong>MEMBER SINCE</strong>
+                <p id="infoMemberSince">–</p>
+              </div>
+            </div>
 
-  <div class="games">
-  <div class="game-card">
-    <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/capsule_616x353.jpg?t=1767883716" alt="Elden Ring">
-    <h3>Elden Ring</h3>
-  </div>
+            <div class="small-balance-item">
+              <div>
+                <strong>TOTAL PURCHASES</strong>
+                <p id="infoTotalPurchases">0 games</p>
+              </div>
+            </div>
 
-  <div class="game-card">
-    <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/7a4a2467300194840eb2116c2126c2d2422b4e12/capsule_616x353.jpg?t=1773426592" alt="EA Sports FC 26">
-    <h3>EA Sports FC 26</h3>
-  </div>
+          </div>
+        </section>
 
-  <div class="game-card">
-    <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1938090/ced309b03740ccd5f2ea33f58fc2059a2257e235/page_bg_raw.jpg?t=1773859543" alt="Call of Duty">
-    <h3>Call of Duty</h3>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-columns">
+        <div>
+          <h4>Account</h4>
+          <a href="#">Overview</a>
+          <a href="#">Orders</a>
+          <a href="#">Settings</a>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <a href="#">Gift Cards</a>
+          <a href="#">Deals</a>
+          <a href="#">Keys</a>
+        </div>
+        <div>
+          <h4>Help</h4>
+          <a href="#">FAQ</a>
+          <a href="#">Contact</a>
+          <a href="#">Support</a>
+        </div>
+        <div>
+          <h4>Community</h4>
+          <a href="#">Discord</a>
+          <a href="#">News</a>
+          <a href="#">Offers</a>
+        </div>
+      </div>
+    </footer>
+
   </div>
 </div>
 
-  <button class="library-btn" type="button">View keys library</button>
-</section>
+<script type="module">
+  import { db } from "./script/firebase-config.js";
+  import { doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-          <section class="card wallet-card">
-            <div class="section-head">
-              <h2>PÉNZTÁRCA</h2>
-              <a href="#" class="text-link">Részletek</a>
-            </div>
+  // ── GUARD ─────────────────────────────────────────────────────
+  const loggedIn = sessionStorage.getItem("loggedIn") === "true";
+  const userId   = sessionStorage.getItem("userId");
+  const username = sessionStorage.getItem("username");
 
-            <div class="big-balance">1384,12 Ft</div>
-            <p class="muted-text">
-              Az elérhető egyenleg.
-            </p>
+  if (!loggedIn || !userId) {
+    window.location.href = "Main_page-login.html";
+  }
 
-            <div class="wallet-actions">
-              <button class="primary-btn">Feltöltés</button>
-              <button class="ghost-btn">Áttekintés</button>
-            </div>
-          </section>
+  // ── LOGOUT ────────────────────────────────────────────────────
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    sessionStorage.clear();
+    localStorage.removeItem("cart");
+    window.location.href = "Main_page-login.html";
+  });
 
-          <section class="card balances-card">
-            <h2>EGYENLEG TÍPUSOK</h2>
+  // ── LOAD USER DATA ────────────────────────────────────────────
+  async function loadDashboard() {
+    try {
+      const snap = await getDoc(doc(db, "users", userId));
+      if (!snap.exists()) return;
+      const user = snap.data();
 
-            <div class="small-balance-list">
-              <div class="small-balance-item">
-                <div>
-                  <strong>AJÁNDÉKKÁRTYA EGYENLEG</strong>
-                  <p>Csak gift card vásárlásokhoz</p>
-                </div>
-                <div class="item-right">
-                  <span>2000</span>
-                  <button>+</button>
-                </div>
-              </div>
+      // Avatar initials
+      const initial = (user.username || "?")[0].toUpperCase();
+      document.getElementById("avatarInitial").textContent  = initial;
+      document.getElementById("profileInitial").textContent = initial;
 
-              <div class="small-balance-item">
-                <div>
-                  <strong>CASHBACK</strong>
-                  <p>Kedvezményekhez és részfizetéshez</p>
-                </div>
-                <div class="item-right">
-                  <span>1384,12 Ft</span>
-                  <button>→</button>
-                </div>
-              </div>
-            </div>
-          </section>
+      // Profile
+      document.getElementById("profileName").textContent  = user.username || "–";
+      document.getElementById("profileEmail").textContent = user.email    || "–";
+
+      // Profile completion
+      let filled = 0;
+      if (user.username) filled++;
+      if (user.email)    filled++;
+      const pct = Math.round((filled / 2) * 100);
+      document.getElementById("progressValue").textContent   = pct + "%";
+      document.getElementById("progressFill").style.width    = pct + "%";
+      document.getElementById("completedMsg").textContent    =
+        pct === 100 ? "✔ Profile complete" : "Fill in all fields to complete your profile.";
+
+      // Account info
+      document.getElementById("infoLanguage").textContent = user.language === "en" ? "English" : "Magyar";
+      document.getElementById("infoCurrency").textContent = (user.currency || "huf").toUpperCase();
+
+      if (user.createdAt) {
+        const d = new Date(user.createdAt);
+        document.getElementById("infoMemberSince").textContent =
+          d.toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" });
+      }
+
+      // Purchases
+      const purchases = user.purchasedGames || [];
+      document.getElementById("infoTotalPurchases").textContent =
+        purchases.length + (purchases.length === 1 ? " game" : " games");
+
+      renderRecentPurchases(purchases);
+
+    } catch (err) {
+      console.error("Dashboard load error:", err);
+    }
+  }
+
+  // ── RENDER RECENT PURCHASES ───────────────────────────────────
+  async function renderRecentPurchases(purchases) {
+    const container = document.getElementById("recentPurchases");
+
+    if (!purchases || purchases.length === 0) {
+      container.innerHTML = `<p class="muted-text">No purchases yet.</p>`;
+      return;
+    }
+
+    // Show last 5, most recent first
+    const recent = [...purchases].reverse().slice(0, 5);
+
+    // Fetch game images from Firestore (batch by unique gameIds)
+    const uniqueIds = [...new Set(recent.map(p => p.gameId))];
+    const imageMap  = {};
+
+    await Promise.all(uniqueIds.map(async id => {
+      try {
+        const gSnap = await getDoc(doc(db, "games", id));
+        if (gSnap.exists()) imageMap[id] = gSnap.data().image || "";
+      } catch {}
+    }));
+
+    container.innerHTML = recent.map(p => {
+      const img = imageMap[p.gameId] || "";
+      const date = new Date(p.purchasedAt).toLocaleDateString("en-GB", {
+        year: "numeric", month: "short", day: "numeric"
+      });
+      const price = p.currency === "EUR"
+        ? `EUR ${Number(p.pricePaid).toFixed(2)}`
+        : `${Number(p.pricePaid).toFixed(0)} HUF`;
+
+      return `
+        <div class="game-card">
+          ${img ? `<img src="${img}" alt="${p.title}" style="width:100%;height:100px;object-fit:cover;display:block;">` : ""}
+          <h3 style="font-size:0.8rem;padding:7px 8px 2px;margin:0;">${p.title}</h3>
+          <p style="font-size:0.75rem;color:#7b2ff7;font-weight:700;padding:0 8px 4px;margin:0;">${price}</p>
+          <p style="font-size:0.72rem;color:#888;padding:0 8px 8px;margin:0;">${date}</p>
         </div>
-      </main>
+      `;
+    }).join("");
+  }
 
-      <footer class="footer">
-        <div class="footer-columns">
-          <div>
-            <h4>Fiók</h4>
-            <a href="#">Áttekintés</a>
-            <a href="#">Rendelések</a>
-            <a href="#">Beállítások</a>
-          </div>
-          <div>
-            <h4>Vásárlás</h4>
-            <a href="#">Ajándékkártyák</a>
-            <a href="#">Akciók</a>
-            <a href="#">Kulcsok</a>
-          </div>
-          <div>
-            <h4>Súgó</h4>
-            <a href="#">GYIK</a>
-            <a href="#">Kapcsolat</a>
-            <a href="#">Támogatás</a>
-          </div>
-          <div>
-            <h4>Közösség</h4>
-            <a href="#">Discord</a>
-            <a href="#">Hírek</a>
-            <a href="#">Ajánlatok</a>
-          </div>
-        </div>
-      </footer>
-    </div>
-  </div>
+  loadDashboard();
+</script>
+
 </body>
 </html>
