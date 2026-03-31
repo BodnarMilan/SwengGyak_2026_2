@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game – Halo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/style-game.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="main-header">
+
+    <div class="header-left">
+        <a href="Main_page.html" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back to Store
+        </a>
+    </div>
+
+    <div class="header-center">
+        <div class="logo-circle"></div>
+        <span class="logo-text">Halo</span>
+    </div>
+
+    <div class="header-right">
+
+        <!-- PREFERENCES DROPDOWN -->
+        <div class="preferences-dropdown">
+            <button id="regionDisplay" class="dropbtn">Magyar | HUF ▼</button>
+            <div class="dropdown-content">
+                <p class="Pop-Up-subtitle">Select your preferences</p>
+                <form class="Pop-Up-form">
+                    <label>Language:</label>
+                    <select id="language">
+                        <option value="hu" selected>Magyar</option>
+                        <option value="en">English</option>
+                    </select>
+                    <label>Currency:</label>
+                    <select id="currency">
+                        <option value="huf" selected>HUF</option>
+                        <option value="eur">EUR</option>
+                    </select>
+                    <input id="savePreferences" class="submit-btn" type="submit" value="Save">
+                </form>
+            </div>
+        </div>
+
+        <span class="icon">♡</span>
+
+        <!-- CART DROPDOWN — identical structure to Main_page.html -->
+        <div class="cart-dropdown" id="cartDropdown">
+            <button class="cart-btn" id="cartBtn">
+                🛒 <span class="cart-count" id="cartCount">0</span>
+            </button>
+            <div class="cart-panel" id="cartPanel">
+                <p class="cart-panel-title">Your Cart</p>
+                <div class="cart-items" id="cartItems">
+                    <p class="cart-empty">Your cart is empty.</p>
+                </div>
+                <div class="cart-footer">
+                    <div class="cart-total" id="cartTotal"></div>
+                    <button class="cart-checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AUTH AREA — populated by game.js based on session -->
+        <div id="authArea">
+            <a href="Main_page-login.html" class="login-link">Bejelentkezés | Regisztráció</a>
+        </div>
+
+    </div>
+</header>
+
+<!-- ================= GAME PAGE CONTENT ================= -->
+<main class="game-page" id="gamePage">
+    <p class="loading-msg" id="loadingMsg">Loading game...</p>
+</main>
+
+<!-- ================= CART TOAST ================= -->
+<div class="cart-toast" id="cartToast">
+    <i class="fa-solid fa-check"></i> Added to cart!
+</div>
+
+<script type="module" src="script/game.js"></script>
+</body>
+</html>

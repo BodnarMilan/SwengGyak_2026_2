@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login – Halo</title>
+    <title>Register – Halo</title>
     <link rel="stylesheet" href="style/style-login.css">
 </head>
 
@@ -11,54 +11,72 @@
 
 <header>
     <nav class="top-nav">
-        <a href="Main_page.html" class="home-btn">← Back to Home page</a>
+        <a href="Main_page-login.html" class="home-btn">← Back to Login</a>
 
         <div class="preferences-dropdown">
             <button id="regionDisplay" class="dropbtn">Magyar | HUF ▼</button>
+
             <div class="dropdown-content">
                 <p class="Pop-Up-subtitle">Select your preferences</p>
+
                 <form class="Pop-Up-form">
                     <label>Language:</label>
                     <select id="language">
                         <option value="hu">Magyar</option>
                         <option value="en">English</option>
                     </select>
+
                     <label>Currency:</label>
                     <select id="currency">
                         <option value="huf">HUF</option>
                         <option value="eur">EUR</option>
                     </select>
+
                     <input id="savePreferences" class="submit-btn" type="submit" value="Save">
                 </form>
             </div>
         </div>
     </nav>
 
-    <h1 class="login">Webshop Login</h1>
+    <h1 class="login">Create an Account</h1>
 </header>
 
 <main class="login-container">
-    <h2>Please login to access your account</h2>
+    <h2>Fill in your details to register</h2>
 
-    <form id="loginForm">
+    <form id="registerForm">
+
+        <label>Email:</label>
+        <input type="email" id="regEmail" placeholder="you@example.com" required>
+        <div class="field-error" id="emailError"></div>
+
         <label>Username:</label>
-        <input type="text" id="loginUsername" placeholder="Your username" required>
+        <input type="text" id="regUsername" placeholder="Choose a username" required>
+        <div class="field-error" id="usernameError"></div>
 
         <label>Password:</label>
         <div class="password-wrapper">
-            <input type="password" id="password" placeholder="Your password" required>
-            <button type="button" id="togglePassword" class="toggle-password">Show</button>
+            <input type="password" id="regPassword" placeholder="Choose a password" required>
+            <button type="button" class="toggle-password" onclick="toggleVis('regPassword', this)">Show</button>
         </div>
 
-        <div class="error-msg" id="loginError"></div>
+        <label>Confirm Password:</label>
+        <div class="password-wrapper">
+            <input type="password" id="regPasswordConfirm" placeholder="Repeat your password" required>
+            <button type="button" class="toggle-password" onclick="toggleVis('regPasswordConfirm', this)">Show</button>
+        </div>
+        <div class="field-error" id="passwordError"></div>
 
-        <input type="submit" value="Login" class="login-btn">
+        <div class="error-msg" id="registerError"></div>
+        <div class="success-msg" id="registerSuccess"></div>
+
+        <input type="submit" value="Register" class="login-btn">
         <hr>
     </form>
 
     <div class="register-prompt">
-        Don't have an account?
-        <a href="register.html" class="register-link">Register now</a>
+        Already have an account?
+        <a href="Main_page-login.html" class="register-link">Login here</a>
     </div>
 </main>
 
@@ -69,6 +87,6 @@
     </div>
 </footer>
 
-<script type="module" src="script/login.js"></script>
+<script type="module" src="script/register.js"></script>
 </body>
 </html>
