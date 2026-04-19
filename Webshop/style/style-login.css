@@ -371,3 +371,16 @@ footer {
 .footer-links a:hover {
     color: #7b2ff7;
 }
+.forgot-link {
+    display: block;
+    margin-top: 12px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #aaa;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.forgot-link:hover {
+    color: #7b2ff7;
+}
