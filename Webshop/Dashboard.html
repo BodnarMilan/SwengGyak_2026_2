@@ -35,7 +35,7 @@
       
       <div class="menu-section">
         <p class="menu-title">Account</p>
-        <a href="#" class="menu-item">
+        <a href="wallet.html" class="menu-item">
           <i class="fa-solid fa-wallet"></i> Wallet
         </a>
         <a href="orders.html" class="menu-item">
@@ -131,13 +131,12 @@
         <section class="card wallet-card">
           <div class="section-head">
             <h2>WALLET</h2>
-            <a href="#" class="text-link">Details</a>
           </div>
           <div class="big-balance">0.00 EUR</div>
           <p class="muted-text">Your available balance.</p>
           <div class="wallet-actions">
-            <button class="primary-btn">Top Up</button>
-            <button class="ghost-btn">Overview</button>
+            <button class="primary-btn" id="btnTopUp">Top Up</button>
+            <button class="ghost-btn" id="btnWalletOverview">Overview</button>
           </div>
         </section>
 
@@ -694,6 +693,23 @@
       }
     } catch {}
   })();
+</script>
+
+
+<!-- ── WALLET BUTTONS ─────────────────────────────────────────
+     Appended block — Top Up shows a not-supported notice,
+     Overview redirects to wallet.html.
+──────────────────────────────────────────────────────────── -->
+<script>
+  // Top Up — inform user the feature is not supported
+  document.getElementById("btnTopUp").addEventListener("click", () => {
+    alert("Online balance top-up is not supported yet. Stay tuned for future updates!");
+  });
+
+  // Overview — redirect to wallet page
+  document.getElementById("btnWalletOverview").addEventListener("click", () => {
+    window.location.href = "wallet.html";
+  });
 </script>
 
 </body>
