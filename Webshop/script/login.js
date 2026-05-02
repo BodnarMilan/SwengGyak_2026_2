@@ -3,7 +3,10 @@ import {
     collection,
     query,
     where,
-    getDocs
+    getDocs,
+    doc,
+    getDoc,
+    updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ── REGION PREFERENCES ────────────────────────────────────────
@@ -99,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("currency", userData.currency || "huf");
             localStorage.setItem("language", userData.language || "hu");
 
+            await recordLogin(userDoc.id);
             window.location.href = "Main_page.html";
 
         } catch (err) {
@@ -110,3 +114,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+
+// ── LOGIN HISTORY ─────────────────────────────────────────────
+// Writes a timestamped entry to loginHistory on the user doc.
+// Automatically trims entries older than 30 days.
+async function recordLogin(userId) {
+    const now    = new Date().toISOString();
+    const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+
+    try {
+        const userRef = doc(db, "users", userId);
+        const snap    = await getDoc(userRef);
+        if (!snap.exists()) return;
+
+        const history = snap.data().loginHistory || [];
+        const trimmed = history.filter(e => e.timestamp >= cutoff);
+        trimmed.push({
+            timestamp: now,
+            userAgent: navigator.userAgent
+        });
+
+        await updateDoc(userRef, { loginHistory: trimmed });
+    } catch (err) {
+        console.error("Login history write error:", err);
+    }
+}

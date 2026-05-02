@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ── INIT ──────────────────────────────────────────────────────
-fetchGames();
+// fetchGames() is now called via fetchGames().then(renderGamesWithWishlist) at the bottom
 loadCart();
 
 // ── CHECKOUT BUTTON GUARD ─────────────────────────────────────
@@ -316,3 +316,133 @@ document.addEventListener("DOMContentLoaded", () => {
     const checkoutBtn = document.getElementById("checkoutBtn");
     if (checkoutBtn) checkoutBtn.addEventListener("click", goToCheckout);
 });
+
+// ── WISHLIST ──────────────────────────────────────────────────
+// Appended block — loads the user's wishlist from Firestore,
+// adds a heart icon to every game card, and toggles on click.
+
+let userWishlist = []; // cache so we don't re-fetch on every card click
+
+async function loadWishlist() {
+    if (!loggedIn || !userId) return;
+    try {
+        const snap = await getDoc(doc(db, "users", userId));
+        userWishlist = snap.exists() ? (snap.data().wishlist || []) : [];
+    } catch (err) {
+        console.error("Wishlist load error:", err);
+    }
+}
+
+async function toggleWishlist(gameId, heartEl) {
+    if (!loggedIn || !userId) {
+        window.location.href = "Main_page-login.html";
+        return;
+    }
+
+    const inList = userWishlist.includes(gameId);
+    if (inList) {
+        userWishlist = userWishlist.filter(id => id !== gameId);
+        heartEl.classList.remove("wishlisted");
+        heartEl.title = "Add to Wishlist";
+    } else {
+        userWishlist.push(gameId);
+        heartEl.classList.add("wishlisted");
+        heartEl.title = "Remove from Wishlist";
+    }
+
+    try {
+        await updateDoc(doc(db, "users", userId), { wishlist: userWishlist });
+    } catch (err) {
+        console.error("Wishlist save error:", err);
+    }
+}
+
+// Override renderGames to inject heart icons after wishlist is loaded
+async function renderGamesWithWishlist() {
+    await loadWishlist();
+
+    const grid = document.getElementById("gameGrid");
+    grid.innerHTML = "";
+
+    const filtered = allGames.filter(game => {
+        const platformOk = activePlatform === "all" ||
+            (Array.isArray(game.platform) && game.platform.includes(activePlatform));
+        const genreOk = activeGenre === "all" ||
+            (Array.isArray(game.genre) && game.genre.includes(activeGenre));
+        const searchOk = searchQuery === "" ||
+            game.title.toLowerCase().includes(searchQuery.toLowerCase());
+        return platformOk && genreOk && searchOk;
+    });
+
+    if (filtered.length === 0) {
+        grid.innerHTML = `<p class="loading-msg">No games found for this filter.</p>`;
+        return;
+    }
+
+    filtered.forEach(game => {
+        const displayPrice    = getPrice(game);
+        const displayPlatform = Array.isArray(game.platform) ? game.platform.join(", ") : (game.platform || "");
+        const isWishlisted    = userWishlist.includes(game.id);
+
+        const card = document.createElement("div");
+        card.className = "game-card-wrapper";
+        card.innerHTML = `
+            <a class="game-card" href="game.html?id=${game.id}">
+                <img src="${game.image}" alt="${game.title}" loading="lazy">
+                <div class="game-info">
+                    <h3>${game.title}</h3>
+                    <p class="platform">${displayPlatform}</p>
+                    <p class="price">${displayPrice}</p>
+                </div>
+            </a>
+            ${loggedIn ? `
+            <button class="heart-btn ${isWishlisted ? "wishlisted" : ""}"
+                    data-id="${game.id}"
+                    title="${isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}">
+                ${isWishlisted ? "♥" : "♡"}
+            </button>` : ""}
+        `;
+        grid.appendChild(card);
+    });
+
+    // Attach heart listeners
+    grid.querySelectorAll(".heart-btn").forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const gameId = btn.dataset.id;
+            await toggleWishlist(gameId, btn);
+            btn.textContent = userWishlist.includes(gameId) ? "♥" : "♡";
+        });
+    });
+}
+
+// Re-wire filters and search to use the new render function
+document.querySelectorAll(".platform-item").forEach(item => {
+    item.addEventListener("click", e => {
+        e.preventDefault();
+        document.querySelectorAll(".platform-item").forEach(i => i.classList.remove("active"));
+        item.classList.add("active");
+        activePlatform = item.dataset.platform;
+        renderGamesWithWishlist();
+    });
+});
+
+document.querySelectorAll(".genre-sidebar li").forEach(item => {
+    item.addEventListener("click", () => {
+        document.querySelectorAll(".genre-sidebar li").forEach(i => i.classList.remove("active"));
+        item.classList.add("active");
+        activeGenre = item.dataset.genre;
+        renderGamesWithWishlist();
+    });
+});
+
+if (searchInput) {
+    searchInput.addEventListener("input", e => {
+        searchQuery = e.target.value;
+        renderGamesWithWishlist();
+    });
+}
+
+// Re-init with wishlist-aware render
+fetchGames().then(() => renderGamesWithWishlist());

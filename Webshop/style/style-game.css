@@ -623,3 +623,42 @@ a { text-decoration: none; }
     color: #b266ff;
     text-decoration: underline;
 }
+
+/* =========================
+   WISHLIST BUTTON (GAME PAGE)
+========================= */
+
+.btn-wishlist {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    background-color: transparent;
+    border: 1px solid #2c2c38;
+    color: #b8b8c8;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.btn-wishlist:hover {
+    border-color: #e05555;
+    color: #e05555;
+    background-color: rgba(224, 85, 85, 0.08);
+}
+
+.btn-wishlist.wishlisted {
+    border-color: #e05555;
+    color: #e05555;
+    background-color: rgba(224, 85, 85, 0.1);
+}
+
+.btn-wishlist.wishlisted:hover {
+    background-color: rgba(224, 85, 85, 0.18);
+}

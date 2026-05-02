@@ -24,26 +24,27 @@
         <a href="Dashboard.html" class="menu-item active-link">
           <i class="fa-solid fa-house"></i> Overview
         </a>
-        <a href="#" class="menu-item">
+        <a href="login-history.html" class="menu-item">
           <i class="fa-solid fa-clock-rotate-left"></i> Login History
         </a>
-        <a href="#" class="menu-item">
+        <a href="wishlist.html" class="menu-item">
           <i class="fa-regular fa-heart"></i> Wishlist
         </a>
       </div>
 
+      
       <div class="menu-section">
         <p class="menu-title">Account</p>
         <a href="#" class="menu-item">
           <i class="fa-solid fa-wallet"></i> Wallet
         </a>
-        <a href="#" class="menu-item">
+        <a href="orders.html" class="menu-item">
           <i class="fa-solid fa-bag-shopping"></i> Orders
         </a>
-        <a href="#" class="menu-item">
+        <a href="keys.html" class="menu-item">
           <i class="fa-solid fa-key"></i> Keys Library
         </a>
-        <a href="#" class="menu-item">
+        <a href="settings.html" class="menu-item">
           <i class="fa-solid fa-gear"></i> Settings
         </a>
       </div>
@@ -81,12 +82,12 @@
         <section class="card profile-card">
           <div class="section-head">
             <h2>PROFILE</h2>
-            <button class="ghost-btn">Edit</button>
           </div>
 
           <div class="profile-header">
             <div class="profile-left">
               <div class="profile-avatar" id="profileInitial">?</div>
+              <img id="profilePicImg" src="" alt="Profile picture" style="display:none;width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid #7b2ff7;">
               <div class="profile-meta">
                 <div class="profile-name" id="profileName">Loading...</div>
                 <div class="profile-email" id="profileEmail"></div>
@@ -107,7 +108,7 @@
           <div class="completed" id="completedMsg"></div>
 
           <div class="quick-actions" style="margin-top:16px;">
-            <button class="action-btn">Edit Profile</button>
+            <button class="action-btn" id="btnEditProfile">Edit Profile</button>
             <button class="action-btn">Security</button>
           </div>
         </section>
@@ -116,16 +117,14 @@
         <section class="card purchases-card">
           <div class="section-head">
             <h2>RECENT PURCHASES</h2>
-            <a href="#" class="text-link">View all</a>
+            <a href="orders.html" class="text-link">View all</a>
           </div>
 
           <div class="games" id="recentPurchases">
             <p class="muted-text">No purchases yet.</p>
           </div>
 
-          <button class="library-btn" type="button" style="margin-top:16px;">
-            View Keys Library
-          </button>
+          <a href="keys.html" class="library-btn" style="margin-top:16px;display:inline-block;text-align:center;text-decoration:none;">View Keys Library</a>
         </section>
 
         <!-- WALLET -->
@@ -175,6 +174,27 @@
               </div>
             </div>
 
+          </div>
+        </section>
+
+        <!-- LOGIN HISTORY -->
+        <section class="card" style="grid-column: 1 / -1;">
+          <div class="section-head">
+            <h2>LOGIN HISTORY <span style="font-weight:400;color:#666;font-size:0.8rem;">(last 30 days)</span></h2>
+          </div>
+          <div id="loginHistoryList">
+            <p class="muted-text">No login history recorded.</p>
+          </div>
+        </section>
+
+        <!-- WISHLIST -->
+        <section class="card" style="grid-column: 1 / -1;">
+          <div class="section-head">
+            <h2>WISHLIST</h2>
+            <a href="Main_page.html" class="text-link">Browse Store</a>
+          </div>
+          <div class="games" id="wishlistItems">
+            <p class="muted-text">Your wishlist is empty.</p>
           </div>
         </section>
 
@@ -326,6 +346,354 @@
   }
 
   loadDashboard();
+
+  // ── LOGIN HISTORY ───────────────────────────────────────────
+  // Appended block — reads loginHistory from the user doc and
+  // renders a table of the last 30 days of logins.
+  async function renderLoginHistory(history) {
+    const container = document.getElementById("loginHistoryList");
+    if (!history || history.length === 0) {
+      container.innerHTML = `<p class="muted-text">No login history recorded yet.</p>`;
+      return;
+    }
+
+    const rows = [...history].reverse().map(entry => {
+      const date = new Date(entry.timestamp).toLocaleString("en-GB", {
+        year: "numeric", month: "short", day: "numeric",
+        hour: "2-digit", minute: "2-digit"
+      });
+      // Simple browser label from userAgent
+      let browser = "Unknown browser";
+      const ua = entry.userAgent || "";
+      if (ua.includes("Chrome") && !ua.includes("Edg"))  browser = "Chrome";
+      else if (ua.includes("Firefox"))                    browser = "Firefox";
+      else if (ua.includes("Safari") && !ua.includes("Chrome")) browser = "Safari";
+      else if (ua.includes("Edg"))                        browser = "Edge";
+
+      return `
+        <div style="display:flex;justify-content:space-between;align-items:center;
+                    padding:10px 14px;border-bottom:1px solid #1c1c25;font-size:0.88rem;">
+          <span style="color:#cfcfe6;">${date}</span>
+          <span style="color:#888;">${browser}</span>
+          <span style="color:#4caf7d;font-size:0.8rem;">✔ Successful</span>
+        </div>
+      `;
+    }).join("");
+
+    container.innerHTML = `
+      <div style="border:1px solid #222;border-radius:10px;overflow:hidden;">
+        <div style="display:flex;justify-content:space-between;padding:8px 14px;
+                    background:#1c1c25;font-size:0.78rem;color:#666;font-weight:700;
+                    text-transform:uppercase;letter-spacing:0.5px;">
+          <span>Date & Time</span><span>Browser</span><span>Status</span>
+        </div>
+        ${rows}
+      </div>
+    `;
+  }
+
+  // ── WISHLIST ────────────────────────────────────────────────
+  // Appended block — reads wishlist game IDs from the user doc,
+  // fetches each game from the games collection, and renders cards.
+  async function renderWishlist(wishlistIds) {
+    const container = document.getElementById("wishlistItems");
+    if (!wishlistIds || wishlistIds.length === 0) {
+      container.innerHTML = `<p class="muted-text">Your wishlist is empty.</p>`;
+      return;
+    }
+
+    const cards = await Promise.all(wishlistIds.map(async id => {
+      try {
+        const gSnap = await getDoc(doc(db, "games", id));
+        if (!gSnap.exists()) return "";
+        const g = gSnap.data();
+        const price = g.priceEUR != null
+          ? `EUR ${Number(g.priceEUR).toFixed(2)}`
+          : (g.price != null ? `${g.price} ${g.currency || ""}` : "N/A");
+        return `
+          <a href="game.html?id=${id}" style="text-decoration:none;" class="game-card">
+            <img src="${g.image || ""}" alt="${g.title}"
+                 style="width:100%;height:100px;object-fit:cover;display:block;">
+            <h3 style="font-size:0.8rem;padding:7px 8px 2px;margin:0;color:#fff;">${g.title}</h3>
+            <p style="font-size:0.75rem;color:#7b2ff7;font-weight:700;padding:0 8px 8px;margin:0;">${price}</p>
+          </a>
+        `;
+      } catch { return ""; }
+    }));
+
+    container.innerHTML = cards.join("");
+  }
+
+  // Hook renderLoginHistory and renderWishlist into loadDashboard
+  const _snap = await (async () => {
+    const s = await getDoc(doc(db, "users", userId));
+    return s;
+  })();
+
+  if (_snap.exists()) {
+    const _data = _snap.data();
+    await renderLoginHistory(_data.loginHistory || []);
+    await renderWishlist(_data.wishlist || []);
+  }
+</script>
+
+
+<!-- ── EDIT PROFILE MODAL ──────────────────────────────────────
+     Appended block — modal for editing username and profile
+     picture URL. Opened by the Edit Profile button on the
+     profile card. Writes to Firestore on save and refreshes
+     the profile card without a full page reload.
+──────────────────────────────────────────────────────────── -->
+<div class="ep-overlay" id="epOverlay">
+  <div class="ep-modal">
+    <div class="ep-modal-head">
+      <h2>Edit Profile</h2>
+      <button class="ep-close" id="epClose">✕</button>
+    </div>
+
+    <!-- AVATAR PREVIEW -->
+    <div class="ep-avatar-preview">
+      <div class="ep-avatar-circle" id="epAvatarCircle">?</div>
+      <img id="epAvatarImg" src="" alt="" style="display:none;">
+    </div>
+
+    <div class="ep-field">
+      <label>Username</label>
+      <input type="text" id="epUsername" placeholder="Your display name" maxlength="30">
+      <div class="ep-field-error" id="epUsernameError"></div>
+    </div>
+
+    <div class="ep-field">
+      <label>Profile Picture URL</label>
+      <input type="url" id="epPicUrl" placeholder="https://example.com/your-photo.jpg"
+             oninput="previewEpImage(this.value)">
+      <div class="ep-field-hint">Paste a direct image URL (jpg, png, webp)</div>
+    </div>
+
+    <div class="ep-error" id="epError"></div>
+    <div class="ep-success" id="epSuccess"></div>
+
+    <div class="ep-actions">
+      <button class="ep-btn-save" id="epSave">
+        <i class="fa-solid fa-floppy-disk"></i> Save Changes
+      </button>
+      <button class="ep-btn-cancel" id="epCancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  // ── EDIT PROFILE ─────────────────────────────────────────────
+  // Appended block — handles opening/closing the Edit Profile
+  // modal, live avatar preview, duplicate username check,
+  // and Firestore write + session update on save.
+
+  import { db } from "./script/firebase-config.js";
+  import {
+    doc,
+    getDoc,
+    updateDoc,
+    collection,
+    query,
+    where,
+    getDocs
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const userId = sessionStorage.getItem("userId");
+
+  // ── OPEN / CLOSE ─────────────────────────────────────────────
+  function openModal() {
+    // Pre-fill current values from displayed profile
+    document.getElementById("epUsername").value = document.getElementById("profileName").textContent.trim();
+
+    const currentImg = document.getElementById("profilePicImg");
+    const urlInput   = document.getElementById("epPicUrl");
+    if (currentImg.style.display !== "none") {
+      urlInput.value = currentImg.src;
+      previewEpImage(currentImg.src);
+    } else {
+      urlInput.value = "";
+      resetEpAvatar();
+    }
+
+    clearEpMessages();
+    document.getElementById("epOverlay").classList.add("open");
+  }
+
+  function closeModal() {
+    document.getElementById("epOverlay").classList.remove("open");
+  }
+
+  document.getElementById("btnEditProfile").addEventListener("click", openModal);
+  document.getElementById("epClose").addEventListener("click",  closeModal);
+  document.getElementById("epCancel").addEventListener("click", closeModal);
+
+  // Close on backdrop click
+  document.getElementById("epOverlay").addEventListener("click", e => {
+    if (e.target === document.getElementById("epOverlay")) closeModal();
+  });
+
+  // ── AVATAR PREVIEW ───────────────────────────────────────────
+  window.previewEpImage = function(url) {
+    const circle = document.getElementById("epAvatarCircle");
+    const img    = document.getElementById("epAvatarImg");
+    if (!url) { resetEpAvatar(); return; }
+    img.src    = url;
+    img.onload = () => {
+      circle.style.display = "none";
+      img.style.display    = "block";
+    };
+    img.onerror = () => { resetEpAvatar(); };
+  };
+
+  function resetEpAvatar() {
+    const circle = document.getElementById("epAvatarCircle");
+    const img    = document.getElementById("epAvatarImg");
+    const name   = document.getElementById("epUsername").value.trim();
+    circle.textContent   = name ? name[0].toUpperCase() : "?";
+    circle.style.display = "flex";
+    img.style.display    = "none";
+  }
+
+  // Update initial letter live as user types username
+  document.getElementById("epUsername").addEventListener("input", e => {
+    const circle = document.getElementById("epAvatarCircle");
+    const img    = document.getElementById("epAvatarImg");
+    if (img.style.display === "none") {
+      circle.textContent = e.target.value ? e.target.value[0].toUpperCase() : "?";
+    }
+  });
+
+  // ── MESSAGES ─────────────────────────────────────────────────
+  function clearEpMessages() {
+    document.getElementById("epError").textContent          = "";
+    document.getElementById("epError").style.display        = "none";
+    document.getElementById("epSuccess").textContent        = "";
+    document.getElementById("epSuccess").style.display      = "none";
+    document.getElementById("epUsernameError").textContent  = "";
+    document.getElementById("epUsername").style.borderColor = "";
+  }
+
+  function showEpError(msg) {
+    const el = document.getElementById("epError");
+    el.textContent    = msg;
+    el.style.display  = "block";
+  }
+
+  function showEpSuccess(msg) {
+    const el = document.getElementById("epSuccess");
+    el.textContent    = msg;
+    el.style.display  = "block";
+  }
+
+  // ── SAVE ─────────────────────────────────────────────────────
+  document.getElementById("epSave").addEventListener("click", async () => {
+    clearEpMessages();
+
+    const newUsername = document.getElementById("epUsername").value.trim();
+    const newPicUrl   = document.getElementById("epPicUrl").value.trim();
+    const btn         = document.getElementById("epSave");
+
+    if (!newUsername) {
+      document.getElementById("epUsernameError").textContent = "Username cannot be empty.";
+      document.getElementById("epUsername").style.borderColor = "#e05555";
+      return;
+    }
+
+    btn.disabled  = true;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Saving...`;
+
+    try {
+      // Check if new username is taken by someone else
+      const currentSnap = await getDoc(doc(db, "users", userId));
+      const currentUser = currentSnap.data();
+      const oldUsername = currentUser.username || "";
+
+      if (newUsername.toLowerCase() !== oldUsername.toLowerCase()) {
+        const q    = query(collection(db, "users"), where("usernameLower", "==", newUsername.toLowerCase()));
+        const snap = await getDocs(q);
+        if (!snap.empty) {
+          document.getElementById("epUsernameError").textContent = "This username is already taken.";
+          document.getElementById("epUsername").style.borderColor = "#e05555";
+          btn.disabled  = false;
+          btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Save Changes`;
+          return;
+        }
+      }
+
+      // Build update object — only include picture if URL provided
+      const updates = {
+        username:      newUsername,
+        usernameLower: newUsername.toLowerCase()
+      };
+      if (newPicUrl) updates.profilePicture = newPicUrl;
+      if (!newPicUrl && currentUser.profilePicture) updates.profilePicture = "";
+
+      await updateDoc(doc(db, "users", userId), updates);
+
+      // Update session
+      sessionStorage.setItem("username", newUsername);
+
+      // Refresh profile card without page reload
+      document.getElementById("profileName").textContent      = newUsername;
+      document.getElementById("avatarInitial").textContent    = newUsername[0].toUpperCase();
+      document.getElementById("profileInitial").textContent   = newUsername[0].toUpperCase();
+
+      const profileImg = document.getElementById("profilePicImg");
+      if (newPicUrl) {
+        profileImg.src            = newPicUrl;
+        profileImg.style.display  = "block";
+        document.getElementById("profileInitial").style.display = "none";
+      } else {
+        profileImg.style.display  = "none";
+        document.getElementById("profileInitial").style.display = "flex";
+      }
+
+      // Also update the "Hi, username" link in the auth area if present
+      const greeting = document.querySelector(".username-link strong");
+      if (greeting) greeting.textContent = newUsername;
+
+      // Refresh completion bar (picture now counts toward completion)
+      let filled = 0;
+      if (newUsername)  filled++;
+      if (currentUser.email) filled++;
+      if (newPicUrl)    filled++;
+      const total = 3;
+      const pct   = Math.round((filled / total) * 100);
+      document.getElementById("progressValue").textContent = pct + "%";
+      document.getElementById("progressFill").style.width  = pct + "%";
+      document.getElementById("completedMsg").textContent  =
+        pct === 100 ? "✔ Profile complete" : "Fill in all fields to complete your profile.";
+
+      showEpSuccess("✔ Profile updated successfully!");
+
+      setTimeout(closeModal, 1800);
+
+    } catch (err) {
+      showEpError(`Something went wrong: ${err.message}`);
+      console.error(err);
+    } finally {
+      btn.disabled  = false;
+      btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Save Changes`;
+    }
+  });
+
+  // ── LOAD PROFILE PICTURE ON DASHBOARD OPEN ───────────────────
+  // If the user already has a profilePicture stored, show it
+  // instead of the initial letter when the dashboard loads.
+  (async () => {
+    try {
+      const snap = await getDoc(doc(db, "users", userId));
+      if (!snap.exists()) return;
+      const pic = snap.data().profilePicture || "";
+      if (pic) {
+        const profileImg = document.getElementById("profilePicImg");
+        profileImg.src           = pic;
+        profileImg.style.display = "block";
+        document.getElementById("profileInitial").style.display = "none";
+      }
+    } catch {}
+  })();
 </script>
 
 </body>

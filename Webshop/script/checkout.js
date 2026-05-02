@@ -216,3 +216,74 @@ document.getElementById("btnPay").addEventListener("click", completePurchase);
 
 // ── INIT ──────────────────────────────────────────────────────
 renderSummary();
+
+// ── KEY GENERATION ────────────────────────────────────────────
+// Appended block — generates a dummy key and attaches it to every
+// purchase record at the moment of checkout completion.
+// Format: Dummy_key_XXXXXX  (6 random digits)
+
+function generateKey() {
+    const digits = Math.floor(100000 + Math.random() * 900000);
+    return `Dummy_key_${digits}`;
+}
+
+// ── COMPLETE PURCHASE (override with key support) ─────────────
+// This appended version replaces completePurchase by redefining
+// it and re-attaching the button listener at the bottom.
+// The original listener is replaced via removeEventListener
+// workaround — we clone the button to drop old listeners cleanly.
+
+async function completePurchaseWithKeys() {
+    if (!validateForm()) return;
+
+    const btn = document.getElementById("btnPay");
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing...`;
+
+    try {
+        const cart = await getCart();
+        const now  = new Date().toISOString();
+
+        // Build purchase records — one per qty unit, each with its own key
+        const purchases = cart.flatMap(item => {
+            const pricePaid = getPriceValue(item);
+            const records   = [];
+            for (let i = 0; i < (item.qty || 1); i++) {
+                records.push({
+                    gameId:      item.id,
+                    title:       item.title,
+                    pricePaid:   pricePaid,
+                    currency:    currency.toUpperCase(),
+                    purchasedAt: now,
+                    key:         generateKey()   // ← dummy key per copy
+                });
+            }
+            return records;
+        });
+
+        const userRef = doc(db, "users", userId);
+        await updateDoc(userRef, {
+            purchasedGames: arrayUnion(...purchases),
+            cart: []
+        });
+
+        const names = [...new Set(cart.map(i => i.title))].join(", ");
+        document.getElementById("successMsg").textContent =
+            `You have successfully purchased: ${names}. Your keys are in the Keys Library.`;
+        document.getElementById("successOverlay").classList.add("show");
+
+    } catch (err) {
+        showError(`Something went wrong: ${err.message}`);
+        console.error(err);
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-lock"></i> Complete Purchase`;
+    }
+}
+
+// Replace the old listener by cloning the button (drops all previous listeners)
+(function replacePayListener() {
+    const oldBtn = document.getElementById("btnPay");
+    const newBtn = oldBtn.cloneNode(true);
+    oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+    newBtn.addEventListener("click", completePurchaseWithKeys);
+})();

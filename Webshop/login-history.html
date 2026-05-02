@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login History – Halo</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <a href="Main_page.html" class="logo" style="text-decoration:none;">Halo</a>
+
+    <nav class="menu">
+      <div class="menu-section">
+        <p class="menu-title">My Account</p>
+        <a href="Dashboard.html" class="menu-item">
+          <i class="fa-solid fa-house"></i> Overview
+        </a>
+        <a href="login-history.html" class="menu-item active-link">
+          <i class="fa-solid fa-clock-rotate-left"></i> Login History
+        </a>
+        <a href="wishlist.html" class="menu-item">
+          <i class="fa-regular fa-heart"></i> Wishlist
+        </a>
+      </div>
+
+      
+      <div class="menu-section">
+        <p class="menu-title">Account</p>
+        <a href="#" class="menu-item">
+          <i class="fa-solid fa-wallet"></i> Wallet
+        </a>
+        <a href="orders.html" class="menu-item">
+          <i class="fa-solid fa-bag-shopping"></i> Orders
+        </a>
+        <a href="keys.html" class="menu-item">
+          <i class="fa-solid fa-key"></i> Keys Library
+        </a>
+        <a href="settings.html" class="menu-item">
+          <i class="fa-solid fa-gear"></i> Settings
+        </a>
+      </div>
+
+      <div class="menu-section" style="margin-top:auto;padding-top:20px;">
+        <button class="menu-item logout-sidebar" id="logoutBtn"
+                style="background:none;border:none;cursor:pointer;width:100%;text-align:left;">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== MAIN WRAPPER ===== -->
+  <div class="main-wrapper">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <input type="text" class="top-search" placeholder="Search your account..." />
+      </div>
+      <div class="topbar-right">
+        <a href="Main_page.html" class="topbar-chip" style="text-decoration:none;">← Back to Store</a>
+        <div class="avatar" id="avatarInitial">?</div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="content">
+      <div class="breadcrumb">My account / Login History</div>
+      <h1>LOGIN HISTORY</h1>
+
+      <!-- SUMMARY ROW -->
+      <div style="display:flex;gap:16px;margin-bottom:28px;flex-wrap:wrap;">
+        <div class="card" style="flex:1;min-width:160px;padding:18px 22px;">
+          <div style="font-size:0.78rem;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">
+            Total Logins (30d)
+          </div>
+          <div style="font-size:1.8rem;font-weight:800;color:#7b2ff7;" id="statTotal">–</div>
+        </div>
+        <div class="card" style="flex:1;min-width:160px;padding:18px 22px;">
+          <div style="font-size:0.78rem;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">
+            Last Login
+          </div>
+          <div style="font-size:1rem;font-weight:700;color:#cfcfe6;" id="statLast">–</div>
+        </div>
+        <div class="card" style="flex:1;min-width:160px;padding:18px 22px;">
+          <div style="font-size:0.78rem;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">
+            Most Used Browser
+          </div>
+          <div style="font-size:1rem;font-weight:700;color:#cfcfe6;" id="statBrowser">–</div>
+        </div>
+      </div>
+
+      <!-- FULL TABLE -->
+      <div class="card">
+        <div class="section-head">
+          <h2>ALL SESSIONS</h2>
+          <span style="font-size:0.82rem;color:#666;">Most recent first · Last 30 days only</span>
+        </div>
+
+        <div id="historyTableWrap">
+          <p class="muted-text">Loading...</p>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-columns">
+        <div>
+          <h4>Account</h4>
+          <a href="#">Overview</a>
+          <a href="#">Orders</a>
+          <a href="#">Settings</a>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <a href="#">Gift Cards</a>
+          <a href="#">Deals</a>
+          <a href="#">Keys</a>
+        </div>
+        <div>
+          <h4>Help</h4>
+          <a href="#">FAQ</a>
+          <a href="#">Contact</a>
+          <a href="#">Support</a>
+        </div>
+        <div>
+          <h4>Community</h4>
+          <a href="#">Discord</a>
+          <a href="#">News</a>
+          <a href="#">Offers</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<script type="module">
+  import { db } from "./script/firebase-config.js";
+  import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // ── GUARD ─────────────────────────────────────────────────────
+  const loggedIn = sessionStorage.getItem("loggedIn") === "true";
+  const userId   = sessionStorage.getItem("userId");
+  if (!loggedIn || !userId) window.location.href = "Main_page-login.html";
+
+  // ── LOGOUT ────────────────────────────────────────────────────
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    sessionStorage.clear();
+    localStorage.removeItem("cart");
+    window.location.href = "Main_page-login.html";
+  });
+
+  // ── BROWSER LABEL ─────────────────────────────────────────────
+  function getBrowser(ua) {
+    if (!ua) return "Unknown";
+    if (ua.includes("Edg"))                              return "Edge";
+    if (ua.includes("Chrome") && !ua.includes("Edg"))   return "Chrome";
+    if (ua.includes("Firefox"))                          return "Firefox";
+    if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
+    return "Other";
+  }
+
+  // ── LOAD DATA ─────────────────────────────────────────────────
+  async function loadHistory() {
+    const snap = await getDoc(doc(db, "users", userId));
+    if (!snap.exists()) return;
+
+    const user    = snap.data();
+    const history = user.loginHistory || [];
+    const initial = (user.username || "?")[0].toUpperCase();
+
+    document.getElementById("avatarInitial").textContent = initial;
+
+    if (history.length === 0) {
+      document.getElementById("statTotal").textContent   = "0";
+      document.getElementById("statLast").textContent    = "No logins recorded";
+      document.getElementById("statBrowser").textContent = "–";
+      document.getElementById("historyTableWrap").innerHTML =
+        `<p class="muted-text">No login history recorded yet. It will appear here after your next login.</p>`;
+      return;
+    }
+
+    // Sort most recent first
+    const sorted = [...history].sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+
+    // Stats
+    document.getElementById("statTotal").textContent = sorted.length;
+
+    const lastDate = new Date(sorted[0].timestamp).toLocaleString("en-GB", {
+      year: "numeric", month: "short", day: "numeric",
+      hour: "2-digit", minute: "2-digit"
+    });
+    document.getElementById("statLast").textContent = lastDate;
+
+    // Most used browser
+    const browserCounts = {};
+    sorted.forEach(e => {
+      const b = getBrowser(e.userAgent);
+      browserCounts[b] = (browserCounts[b] || 0) + 1;
+    });
+    const topBrowser = Object.entries(browserCounts).sort((a, b) => b[1] - a[1])[0][0];
+    document.getElementById("statBrowser").textContent = topBrowser;
+
+    // Full table
+    const rows = sorted.map((entry, i) => {
+      const date = new Date(entry.timestamp).toLocaleString("en-GB", {
+        weekday: "short", year: "numeric", month: "short", day: "numeric",
+        hour: "2-digit", minute: "2-digit", second: "2-digit"
+      });
+      const browser = getBrowser(entry.userAgent);
+      const isLatest = i === 0;
+
+      return `
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+                    align-items:center;gap:12px;padding:12px 16px;
+                    border-bottom:1px solid #1c1c25;font-size:0.88rem;">
+          <span style="color:#cfcfe6;">${date}</span>
+          <span style="color:#888;">${browser}</span>
+          <span style="color:#4caf7d;">✔ Successful</span>
+          <span style="text-align:right;">
+            ${isLatest ? `<span style="background:#7b2ff7;color:#fff;font-size:0.72rem;
+                          font-weight:700;padding:2px 8px;border-radius:20px;">Current</span>` : ""}
+          </span>
+        </div>
+      `;
+    }).join("");
+
+    document.getElementById("historyTableWrap").innerHTML = `
+      <div style="border-radius:10px;overflow:hidden;border:1px solid #222;">
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;
+                    padding:10px 16px;background:#1c1c25;
+                    font-size:0.75rem;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">
+          <span>Date &amp; Time</span>
+          <span>Browser</span>
+          <span>Status</span>
+          <span></span>
+        </div>
+        ${rows}
+      </div>
+    `;
+  }
+
+  loadHistory();
+</script>
+
+</body>
+</html>

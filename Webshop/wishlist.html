@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wishlist – Halo</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── WISHLIST PAGE EXTRAS ──────────────────────────────── */
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .wl-card {
+      background-color: #14141c;
+      border: 1px solid #222;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wl-card:hover {
+      border-color: #7b2ff7;
+      box-shadow: 0 0 18px rgba(123,47,247,0.35);
+    }
+
+    .wl-card img {
+      width: 100%;
+      aspect-ratio: 616/353;
+      object-fit: cover;
+      display: block;
+    }
+
+    .wl-card-body {
+      padding: 12px 14px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .wl-card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+
+    .wl-card-price {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #7b2ff7;
+    }
+
+    .wl-card-platform {
+      font-size: 0.78rem;
+      color: #888;
+      text-transform: capitalize;
+    }
+
+    .wl-card-actions {
+      display: flex;
+      gap: 8px;
+      padding: 0 14px 14px;
+    }
+
+    .wl-btn-view {
+      flex: 1;
+      padding: 8px;
+      background-color: #7b2ff7;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: 0.25s ease;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+    }
+
+    .wl-btn-view:hover {
+      background-color: #5d1edb;
+    }
+
+    .wl-btn-remove {
+      padding: 8px 12px;
+      background-color: transparent;
+      border: 1px solid #2c2c38;
+      border-radius: 8px;
+      color: #888;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .wl-btn-remove:hover {
+      border-color: #e05555;
+      color: #e05555;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      color: #2c2c38;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .empty-state p {
+      margin: 0 0 20px;
+      font-size: 0.95rem;
+    }
+
+    .empty-state a {
+      display: inline-block;
+      padding: 10px 24px;
+      background-color: #7b2ff7;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 700;
+      transition: 0.25s ease;
+    }
+
+    .empty-state a:hover {
+      background-color: #5d1edb;
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <a href="Main_page.html" class="logo" style="text-decoration:none;">Halo</a>
+
+    <nav class="menu">
+      <div class="menu-section">
+        <p class="menu-title">My Account</p>
+        <a href="Dashboard.html" class="menu-item">
+          <i class="fa-solid fa-house"></i> Overview
+        </a>
+        <a href="login-history.html" class="menu-item">
+          <i class="fa-solid fa-clock-rotate-left"></i> Login History
+        </a>
+        <a href="wishlist.html" class="menu-item active-link">
+          <i class="fa-regular fa-heart"></i> Wishlist
+        </a>
+      </div>
+
+      
+      <div class="menu-section">
+        <p class="menu-title">Account</p>
+        <a href="#" class="menu-item">
+          <i class="fa-solid fa-wallet"></i> Wallet
+        </a>
+        <a href="orders.html" class="menu-item">
+          <i class="fa-solid fa-bag-shopping"></i> Orders
+        </a>
+        <a href="keys.html" class="menu-item">
+          <i class="fa-solid fa-key"></i> Keys Library
+        </a>
+        <a href="settings.html" class="menu-item">
+          <i class="fa-solid fa-gear"></i> Settings
+        </a>
+      </div>
+
+      <div class="menu-section" style="margin-top:auto;padding-top:20px;">
+        <button class="menu-item logout-sidebar" id="logoutBtn"
+                style="background:none;border:none;cursor:pointer;width:100%;text-align:left;">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== MAIN WRAPPER ===== -->
+  <div class="main-wrapper">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <input type="text" id="wlSearch" class="top-search" placeholder="Search wishlist..." />
+      </div>
+      <div class="topbar-right">
+        <a href="Main_page.html" class="topbar-chip" style="text-decoration:none;">← Back to Store</a>
+        <div class="avatar" id="avatarInitial">?</div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="content">
+      <div class="breadcrumb">My account / Wishlist</div>
+      <h1>WISHLIST <span id="wlCount" style="font-size:1rem;font-weight:500;color:#888;"></span></h1>
+
+      <div id="wishlistContainer">
+        <p class="muted-text">Loading...</p>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-columns">
+        <div>
+          <h4>Account</h4>
+          <a href="#">Overview</a>
+          <a href="#">Orders</a>
+          <a href="#">Settings</a>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <a href="#">Gift Cards</a>
+          <a href="#">Deals</a>
+          <a href="#">Keys</a>
+        </div>
+        <div>
+          <h4>Help</h4>
+          <a href="#">FAQ</a>
+          <a href="#">Contact</a>
+          <a href="#">Support</a>
+        </div>
+        <div>
+          <h4>Community</h4>
+          <a href="#">Discord</a>
+          <a href="#">News</a>
+          <a href="#">Offers</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<script type="module">
+  import { db } from "./script/firebase-config.js";
+  import {
+    doc,
+    getDoc,
+    updateDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // ── GUARD ─────────────────────────────────────────────────────
+  const loggedIn = sessionStorage.getItem("loggedIn") === "true";
+  const userId   = sessionStorage.getItem("userId");
+  const currency = (sessionStorage.getItem("currency") || localStorage.getItem("currency") || "huf").toLowerCase();
+  if (!loggedIn || !userId) window.location.href = "Main_page-login.html";
+
+  // ── LOGOUT ────────────────────────────────────────────────────
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    sessionStorage.clear();
+    localStorage.removeItem("cart");
+    window.location.href = "Main_page-login.html";
+  });
+
+  // ── STATE ─────────────────────────────────────────────────────
+  let allWishlistGames = []; // { id, title, priceEUR, priceHUF, platform, image }
+
+  // ── PRICE HELPER ──────────────────────────────────────────────
+  function formatPrice(game) {
+    if (currency === "eur") {
+      const p = game.priceEUR ?? game.price;
+      return p != null ? `EUR ${Number(p).toFixed(2)}` : "N/A";
+    } else {
+      const p = game.priceHUF ?? game.price;
+      return p != null ? `${Number(p).toFixed(0)} HUF` : "N/A";
+    }
+  }
+
+  // ── RENDER ────────────────────────────────────────────────────
+  function renderWishlist(games) {
+    const container = document.getElementById("wishlistContainer");
+    const countEl   = document.getElementById("wlCount");
+
+    countEl.textContent = games.length > 0 ? `(${games.length})` : "";
+
+    if (games.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-regular fa-heart"></i>
+          <p>Your wishlist is empty.</p>
+          <a href="Main_page.html">Browse the Store</a>
+        </div>
+      `;
+      return;
+    }
+
+    const grid = document.createElement("div");
+    grid.className = "wishlist-grid";
+
+    games.forEach(game => {
+      const card = document.createElement("div");
+      card.className = "wl-card";
+      card.dataset.id    = game.id;
+      card.dataset.title = game.title.toLowerCase();
+
+      card.innerHTML = `
+        <img src="${game.image || ""}" alt="${game.title}">
+        <div class="wl-card-body">
+          <p class="wl-card-title">${game.title}</p>
+          <p class="wl-card-price">${formatPrice(game)}</p>
+          <p class="wl-card-platform">${Array.isArray(game.platform) ? game.platform.join(", ") : (game.platform || "")}</p>
+        </div>
+        <div class="wl-card-actions">
+          <a href="game.html?id=${game.id}" class="wl-btn-view">View Game</a>
+          <button class="wl-btn-remove" data-id="${game.id}" title="Remove from Wishlist">
+            <i class="fa-solid fa-heart-crack"></i>
+          </button>
+        </div>
+      `;
+
+      grid.appendChild(card);
+    });
+
+    container.innerHTML = "";
+    container.appendChild(grid);
+
+    // Remove buttons
+    container.querySelectorAll(".wl-btn-remove").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const gameId = btn.dataset.id;
+        await removeFromWishlist(gameId);
+      });
+    });
+  }
+
+  // ── REMOVE ────────────────────────────────────────────────────
+  async function removeFromWishlist(gameId) {
+    allWishlistGames = allWishlistGames.filter(g => g.id !== gameId);
+    const updatedIds = allWishlistGames.map(g => g.id);
+
+    try {
+      await updateDoc(doc(db, "users", userId), { wishlist: updatedIds });
+    } catch (err) {
+      console.error("Wishlist remove error:", err);
+    }
+
+    // Re-render with current search filter applied
+    const query = document.getElementById("wlSearch").value.toLowerCase();
+    const filtered = query
+      ? allWishlistGames.filter(g => g.title.toLowerCase().includes(query))
+      : allWishlistGames;
+
+    renderWishlist(filtered);
+  }
+
+  // ── SEARCH ────────────────────────────────────────────────────
+  document.getElementById("wlSearch").addEventListener("input", e => {
+    const q = e.target.value.toLowerCase();
+    const filtered = q
+      ? allWishlistGames.filter(g => g.title.toLowerCase().includes(q))
+      : allWishlistGames;
+    renderWishlist(filtered);
+  });
+
+  // ── LOAD DATA ─────────────────────────────────────────────────
+  async function loadWishlist() {
+    const snap = await getDoc(doc(db, "users", userId));
+    if (!snap.exists()) return;
+
+    const user = snap.data();
+    document.getElementById("avatarInitial").textContent = (user.username || "?")[0].toUpperCase();
+
+    const wishlistIds = user.wishlist || [];
+
+    if (wishlistIds.length === 0) {
+      allWishlistGames = [];
+      renderWishlist([]);
+      return;
+    }
+
+    // Fetch each game's data from Firestore
+    const games = await Promise.all(wishlistIds.map(async id => {
+      try {
+        const gSnap = await getDoc(doc(db, "games", id));
+        if (!gSnap.exists()) return null;
+        return { id, ...gSnap.data() };
+      } catch { return null; }
+    }));
+
+    allWishlistGames = games.filter(Boolean);
+    renderWishlist(allWishlistGames);
+  }
+
+  loadWishlist();
+</script>
+
+</body>
+</html>

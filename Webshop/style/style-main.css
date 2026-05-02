@@ -575,3 +575,75 @@ a {
     color: #b266ff;
     text-decoration: underline;
 }
+
+/* =========================
+   WISHLIST HEART (GAME CARD)
+========================= */
+
+.game-card-wrapper {
+    position: relative;
+}
+
+.game-card-wrapper .game-card {
+    display: block;
+    height: 100%;
+}
+
+.heart-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: rgba(15, 15, 20, 0.75);
+    border: 1px solid #2c2c38;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    font-size: 1.1rem;
+    color: #888;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease;
+    z-index: 2;
+    backdrop-filter: blur(4px);
+}
+
+.heart-btn:hover {
+    border-color: #e05555;
+    color: #e05555;
+    background-color: rgba(224, 85, 85, 0.15);
+}
+
+.heart-btn.wishlisted {
+    color: #e05555;
+    border-color: #e05555;
+    background-color: rgba(224, 85, 85, 0.15);
+}
+
+/* =========================
+   HEART BTN — HOVER REVEAL
+   (appended block)
+   Heart is hidden by default,
+   appears on card hover only.
+========================= */
+
+.heart-btn {
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.18s ease, transform 0.18s ease,
+                border-color 0.18s ease, color 0.18s ease,
+                background-color 0.18s ease;
+}
+
+.game-card-wrapper:hover .heart-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Always visible when already wishlisted
+   so the user knows the state at a glance */
+.heart-btn.wishlisted {
+    opacity: 1;
+    transform: scale(1);
+}

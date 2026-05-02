@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings – Halo</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── SETTINGS PAGE EXTRAS ────────────────────────────────── */
+
+    .settings-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 620px;
+    }
+
+    .settings-card {
+      background-color: #14141c;
+      border: 1px solid #222;
+      border-radius: 14px;
+      padding: 26px 28px;
+    }
+
+    .settings-card-heading {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #7b2ff7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #222;
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      border-bottom: 1px solid #1c1c25;
+    }
+
+    .setting-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .setting-row:first-of-type {
+      padding-top: 0;
+    }
+
+    .setting-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #cfcfe6;
+    }
+
+    .setting-desc {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 3px;
+    }
+
+    .setting-control select {
+      height: 40px;
+      padding: 0 32px 0 12px;
+      background-color: #1c1c25;
+      border: 1px solid #2c2c38;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      transition: 0.25s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    }
+
+    .setting-control select:focus {
+      border-color: #7b2ff7;
+      box-shadow: 0 0 8px rgba(123,47,247,0.3);
+    }
+
+    .setting-control select option {
+      background-color: #1c1c25;
+    }
+
+    /* SAVE BUTTON */
+    .btn-save-settings {
+      margin-top: 8px;
+      padding: 12px 28px;
+      background-color: #7b2ff7;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.25s ease;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-save-settings:hover {
+      background-color: #5d1edb;
+      box-shadow: 0 0 14px rgba(123,47,247,0.45);
+    }
+
+    .btn-save-settings:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* STATUS */
+    .save-status {
+      margin-top: 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .save-status.success {
+      display: block;
+      background-color: #0d2e1a;
+      border: 1px solid #1a6636;
+      color: #4caf7d;
+    }
+
+    .save-status.error {
+      display: block;
+      background-color: #2e0d0d;
+      border: 1px solid #6e2020;
+      color: #e07070;
+    }
+
+    /* ACCOUNT INFO READ-ONLY */
+    .info-value {
+      font-size: 0.92rem;
+      color: #cfcfe6;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <a href="Main_page.html" class="logo" style="text-decoration:none;">Halo</a>
+
+    <nav class="menu">
+      <div class="menu-section">
+        <p class="menu-title">My Account</p>
+        <a href="Dashboard.html" class="menu-item">
+          <i class="fa-solid fa-house"></i> Overview
+        </a>
+        <a href="login-history.html" class="menu-item">
+          <i class="fa-solid fa-clock-rotate-left"></i> Login History
+        </a>
+        <a href="wishlist.html" class="menu-item">
+          <i class="fa-regular fa-heart"></i> Wishlist
+        </a>
+      </div>
+
+      <div class="menu-section">
+        <p class="menu-title">Account</p>
+        <a href="#" class="menu-item">
+          <i class="fa-solid fa-wallet"></i> Wallet
+        </a>
+        <a href="orders.html" class="menu-item">
+          <i class="fa-solid fa-bag-shopping"></i> Orders
+        </a>
+        <a href="keys.html" class="menu-item">
+          <i class="fa-solid fa-key"></i> Keys Library
+        </a>
+        <a href="settings.html" class="menu-item active-link">
+          <i class="fa-solid fa-gear"></i> Settings
+        </a>
+      </div>
+
+      <div class="menu-section" style="margin-top:auto;padding-top:20px;">
+        <button class="menu-item logout-sidebar" id="logoutBtn"
+                style="background:none;border:none;cursor:pointer;width:100%;text-align:left;">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== MAIN WRAPPER ===== -->
+  <div class="main-wrapper">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <input type="text" class="top-search" placeholder="Search your account..." />
+      </div>
+      <div class="topbar-right">
+        <a href="Main_page.html" class="topbar-chip" style="text-decoration:none;">← Back to Store</a>
+        <div class="avatar" id="avatarInitial">?</div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="content">
+      <div class="breadcrumb">My account / Settings</div>
+      <h1>SETTINGS</h1>
+
+      <div class="settings-grid">
+
+        <!-- ACCOUNT INFO (read-only) -->
+        <div class="settings-card">
+          <p class="settings-card-heading">Account Information</p>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-label">Username</div>
+              <div class="setting-desc">Your display name across the platform</div>
+            </div>
+            <div class="info-value" id="infoUsername">–</div>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-label">Email</div>
+              <div class="setting-desc">Registered email address</div>
+            </div>
+            <div class="info-value" id="infoEmail">–</div>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-label">Member Since</div>
+              <div class="setting-desc">Account creation date</div>
+            </div>
+            <div class="info-value" id="infoSince">–</div>
+          </div>
+        </div>
+
+        <!-- REGIONAL PREFERENCES -->
+        <div class="settings-card">
+          <p class="settings-card-heading">Regional Preferences</p>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-label">Language</div>
+              <div class="setting-desc">Interface display language</div>
+            </div>
+            <div class="setting-control">
+              <select id="settingLanguage">
+                <option value="hu">Magyar</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-label">Currency</div>
+              <div class="setting-desc">Prices are displayed in this currency</div>
+            </div>
+            <div class="setting-control">
+              <select id="settingCurrency">
+                <option value="huf">HUF – Hungarian Forint</option>
+                <option value="eur">EUR – Euro</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn-save-settings" id="btnSave">
+            <i class="fa-solid fa-floppy-disk"></i> Save Preferences
+          </button>
+
+          <div class="save-status" id="saveStatus"></div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-columns">
+        <div>
+          <h4>Account</h4>
+          <a href="Dashboard.html">Overview</a>
+          <a href="orders.html">Orders</a>
+          <a href="settings.html">Settings</a>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <a href="#">Gift Cards</a>
+          <a href="#">Deals</a>
+          <a href="keys.html">Keys</a>
+        </div>
+        <div>
+          <h4>Help</h4>
+          <a href="#">FAQ</a>
+          <a href="#">Contact</a>
+          <a href="#">Support</a>
+        </div>
+        <div>
+          <h4>Community</h4>
+          <a href="#">Discord</a>
+          <a href="#">News</a>
+          <a href="#">Offers</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<script type="module">
+  import { db } from "./script/firebase-config.js";
+  import {
+    doc,
+    getDoc,
+    updateDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // ── GUARD ─────────────────────────────────────────────────────
+  const loggedIn = sessionStorage.getItem("loggedIn") === "true";
+  const userId   = sessionStorage.getItem("userId");
+  if (!loggedIn || !userId) window.location.href = "Main_page-login.html";
+
+  // ── LOGOUT ────────────────────────────────────────────────────
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    sessionStorage.clear();
+    localStorage.removeItem("cart");
+    window.location.href = "Main_page-login.html";
+  });
+
+  // ── SHOW STATUS ───────────────────────────────────────────────
+  function showStatus(msg, type) {
+    const el = document.getElementById("saveStatus");
+    el.textContent  = msg;
+    el.className    = `save-status ${type}`;
+    setTimeout(() => { el.className = "save-status"; }, 3500);
+  }
+
+  // ── LOAD USER DATA ────────────────────────────────────────────
+  async function loadSettings() {
+    const snap = await getDoc(doc(db, "users", userId));
+    if (!snap.exists()) return;
+
+    const user = snap.data();
+
+    // Avatar
+    document.getElementById("avatarInitial").textContent = (user.username || "?")[0].toUpperCase();
+
+    // Account info (read-only display)
+    document.getElementById("infoUsername").textContent = user.username || "–";
+    document.getElementById("infoEmail").textContent    = user.email    || "–";
+
+    if (user.createdAt) {
+      document.getElementById("infoSince").textContent = new Date(user.createdAt)
+        .toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" });
+    }
+
+    // Pre-select current language and currency from Firestore
+    const lang = user.language || "hu";
+    const curr = user.currency || "huf";
+
+    document.getElementById("settingLanguage").value = lang;
+    document.getElementById("settingCurrency").value = curr;
+  }
+
+  // ── SAVE SETTINGS ─────────────────────────────────────────────
+  document.getElementById("btnSave").addEventListener("click", async () => {
+    const btn  = document.getElementById("btnSave");
+    const lang = document.getElementById("settingLanguage").value;
+    const curr = document.getElementById("settingCurrency").value;
+
+    btn.disabled  = true;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Saving...`;
+
+    try {
+      // Write to Firestore
+      await updateDoc(doc(db, "users", userId), {
+        language: lang,
+        currency: curr
+      });
+
+      // Sync session and localStorage so changes take effect immediately
+      sessionStorage.setItem("language", lang);
+      sessionStorage.setItem("currency", curr);
+      localStorage.setItem("language",   lang);
+      localStorage.setItem("currency",   curr);
+
+      showStatus("✔ Preferences saved successfully.", "success");
+
+    } catch (err) {
+      showStatus(`✘ Error: ${err.message}`, "error");
+      console.error(err);
+    } finally {
+      btn.disabled  = false;
+      btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Save Preferences`;
+    }
+  });
+
+  // ── INIT ──────────────────────────────────────────────────────
+  loadSettings();
+</script>
+
+</body>
+</html>

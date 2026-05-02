@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keys Library – Halo</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── KEYS PAGE EXTRAS ────────────────────────────────────── */
+
+    .keys-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .keys-search {
+      flex: 1;
+      min-width: 200px;
+      height: 40px;
+      padding: 0 14px;
+      background-color: #1c1c25;
+      border: 1px solid #2c2c38;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      transition: 0.25s ease;
+    }
+
+    .keys-search::placeholder { color: #7d7d90; }
+    .keys-search:focus {
+      border-color: #7b2ff7;
+      box-shadow: 0 0 8px rgba(123,47,247,0.3);
+    }
+
+    /* STAT STRIP */
+    .stat-strip {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .stat-chip {
+      background-color: #14141c;
+      border: 1px solid #222;
+      border-radius: 12px;
+      padding: 14px 20px;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .stat-chip-label {
+      font-size: 0.75rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .stat-chip-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #7b2ff7;
+    }
+
+    /* KEY ROW */
+    .key-row {
+      display: grid;
+      grid-template-columns: 72px 1fr auto auto;
+      gap: 16px;
+      align-items: center;
+      padding: 16px;
+      background-color: #14141c;
+      border: 1px solid #222;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s ease;
+    }
+
+    .key-row:hover {
+      border-color: #7b2ff7;
+    }
+
+    .key-thumb {
+      width: 72px;
+      height: 41px;
+      object-fit: cover;
+      border-radius: 6px;
+      display: block;
+      background-color: #1c1c25;
+    }
+
+    .key-thumb-placeholder {
+      width: 72px;
+      height: 41px;
+      border-radius: 6px;
+      background-color: #1c1c25;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #444;
+      font-size: 1.1rem;
+    }
+
+    .key-info-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 6px;
+    }
+
+    .key-info-date {
+      font-size: 0.78rem;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    /* KEY REVEAL FIELD */
+    .key-field {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .key-value {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #b266ff;
+      background-color: #1c1c25;
+      border: 1px solid #2c2c38;
+      border-radius: 8px;
+      padding: 6px 12px;
+      letter-spacing: 1px;
+      /* blurred by default */
+      filter: blur(5px);
+      user-select: none;
+      transition: filter 0.25s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .key-value.revealed {
+      filter: none;
+      user-select: text;
+      cursor: default;
+    }
+
+    .key-value:not(.revealed):hover {
+      filter: blur(2px);
+    }
+
+    .key-toggle-btn {
+      background: none;
+      border: 1px solid #2c2c38;
+      color: #888;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+      white-space: nowrap;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+
+    .key-toggle-btn:hover {
+      border-color: #7b2ff7;
+      color: #fff;
+    }
+
+    .key-toggle-btn.active {
+      border-color: #7b2ff7;
+      color: #b266ff;
+      background-color: rgba(123,47,247,0.08);
+    }
+
+    .key-copy-btn {
+      background: none;
+      border: 1px solid #2c2c38;
+      color: #888;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+
+    .key-copy-btn:hover {
+      border-color: #4caf7d;
+      color: #4caf7d;
+    }
+
+    .key-copy-btn.copied {
+      border-color: #4caf7d;
+      color: #4caf7d;
+    }
+
+    .key-actions-col {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .btn-view-game {
+      padding: 7px 14px;
+      background-color: #7b2ff7;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: 0.2s ease;
+      white-space: nowrap;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+
+    .btn-view-game:hover { background-color: #5d1edb; }
+
+    /* NO KEY BADGE */
+    .no-key-badge {
+      font-size: 0.78rem;
+      color: #888;
+      background-color: #1c1c25;
+      border: 1px solid #2c2c38;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-style: italic;
+    }
+
+    /* HOVER HINT */
+    .key-hint {
+      font-size: 0.75rem;
+      color: #666;
+      margin-top: 3px;
+    }
+
+    /* EMPTY STATE */
+    .keys-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+    }
+
+    .keys-empty i {
+      font-size: 3rem;
+      color: #2c2c38;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .keys-empty a {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 24px;
+      background-color: #7b2ff7;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 700;
+      transition: 0.25s ease;
+    }
+
+    .keys-empty a:hover { background-color: #5d1edb; }
+
+    @media (max-width: 700px) {
+      .key-row {
+        grid-template-columns: 60px 1fr;
+        grid-template-rows: auto auto;
+      }
+      .key-actions-col { grid-column: 1 / -1; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <a href="Main_page.html" class="logo" style="text-decoration:none;">Halo</a>
+
+    <nav class="menu">
+      <div class="menu-section">
+        <p class="menu-title">My Account</p>
+        <a href="Dashboard.html" class="menu-item">
+          <i class="fa-solid fa-house"></i> Overview
+        </a>
+        <a href="login-history.html" class="menu-item">
+          <i class="fa-solid fa-clock-rotate-left"></i> Login History
+        </a>
+        <a href="wishlist.html" class="menu-item">
+          <i class="fa-regular fa-heart"></i> Wishlist
+        </a>
+      </div>
+
+      
+      <div class="menu-section">
+        <p class="menu-title">Account</p>
+        <a href="#" class="menu-item">
+          <i class="fa-solid fa-wallet"></i> Wallet
+        </a>
+        <a href="orders.html" class="menu-item">
+          <i class="fa-solid fa-bag-shopping"></i> Orders
+        </a>
+        <a href="keys.html" class="menu-item active-link">
+          <i class="fa-solid fa-key"></i> Keys Library
+        </a>
+        <a href="settings.html" class="menu-item">
+          <i class="fa-solid fa-gear"></i> Settings
+        </a>
+      </div>
+
+      <div class="menu-section" style="margin-top:auto;padding-top:20px;">
+        <button class="menu-item logout-sidebar" id="logoutBtn"
+                style="background:none;border:none;cursor:pointer;width:100%;text-align:left;">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== MAIN WRAPPER ===== -->
+  <div class="main-wrapper">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <input type="text" id="keysSearch" class="top-search keys-search"
+               placeholder="Search by game title..." />
+      </div>
+      <div class="topbar-right">
+        <a href="Main_page.html" class="topbar-chip" style="text-decoration:none;">← Back to Store</a>
+        <div class="avatar" id="avatarInitial">?</div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="content">
+      <div class="breadcrumb">My account / Keys Library</div>
+      <h1>KEYS LIBRARY</h1>
+
+      <!-- STAT STRIP -->
+      <div class="stat-strip">
+        <div class="stat-chip">
+          <div class="stat-chip-label">Total Keys</div>
+          <div class="stat-chip-value" id="statTotal">–</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-label">Unique Games</div>
+          <div class="stat-chip-value" id="statUnique">–</div>
+        </div>
+      </div>
+
+      <!-- CONTROLS -->
+      <div class="keys-controls">
+        <input type="text" id="keysSearchInline" class="keys-search"
+               placeholder="Search by game title...">
+        <button id="revealAllBtn" class="key-toggle-btn">
+          <i class="fa-regular fa-eye"></i> Reveal All
+        </button>
+        <button id="hideAllBtn" class="key-toggle-btn">
+          <i class="fa-regular fa-eye-slash"></i> Hide All
+        </button>
+      </div>
+
+      <!-- KEY LIST -->
+      <div id="keyList">
+        <p class="muted-text">Loading...</p>
+      </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-columns">
+        <div>
+          <h4>Account</h4>
+          <a href="Dashboard.html">Overview</a>
+          <a href="orders.html">Orders</a>
+          <a href="#">Settings</a>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <a href="#">Gift Cards</a>
+          <a href="#">Deals</a>
+          <a href="keys.html">Keys</a>
+        </div>
+        <div>
+          <h4>Help</h4>
+          <a href="#">FAQ</a>
+          <a href="#">Contact</a>
+          <a href="#">Support</a>
+        </div>
+        <div>
+          <h4>Community</h4>
+          <a href="#">Discord</a>
+          <a href="#">News</a>
+          <a href="#">Offers</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<script type="module">
+  import { db } from "./script/firebase-config.js";
+  import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // ── GUARD ─────────────────────────────────────────────────────
+  const loggedIn = sessionStorage.getItem("loggedIn") === "true";
+  const userId   = sessionStorage.getItem("userId");
+  if (!loggedIn || !userId) window.location.href = "Main_page-login.html";
+
+  // ── LOGOUT ────────────────────────────────────────────────────
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    sessionStorage.clear();
+    localStorage.removeItem("cart");
+    window.location.href = "Main_page-login.html";
+  });
+
+  // ── STATE ─────────────────────────────────────────────────────
+  let allKeys    = []; // enriched purchase records that have a key
+  let imageCache = {};
+
+  // ── FETCH GAME IMAGE ──────────────────────────────────────────
+  async function fetchImage(gameId) {
+    if (imageCache[gameId] !== undefined) return imageCache[gameId];
+    try {
+      const snap = await getDoc(doc(db, "games", gameId));
+      imageCache[gameId] = snap.exists() ? (snap.data().image || "") : "";
+    } catch { imageCache[gameId] = ""; }
+    return imageCache[gameId];
+  }
+
+  // ── RENDER ────────────────────────────────────────────────────
+  function renderKeys(keys) {
+    const list = document.getElementById("keyList");
+
+    if (!keys || keys.length === 0) {
+      list.innerHTML = `
+        <div class="keys-empty">
+          <i class="fa-solid fa-key"></i>
+          <p>No keys found.</p>
+          <a href="Main_page.html">Browse the Store</a>
+        </div>`;
+      return;
+    }
+
+    list.innerHTML = keys.map((entry, idx) => {
+      const date = new Date(entry.purchasedAt).toLocaleDateString("en-GB", {
+        year: "numeric", month: "short", day: "numeric"
+      });
+      const img    = imageCache[entry.gameId] || "";
+      const keyVal = entry.key || null;
+
+      return `
+        <div class="key-row" data-idx="${idx}">
+
+          ${img
+            ? `<img class="key-thumb" src="${img}" alt="${entry.title}">`
+            : `<div class="key-thumb-placeholder"><i class="fa-solid fa-gamepad"></i></div>`}
+
+          <div class="key-info">
+            <p class="key-info-title">${entry.title}</p>
+            <p class="key-info-date"><i class="fa-regular fa-calendar"></i> ${date}</p>
+
+            ${keyVal ? `
+              <div class="key-field">
+                <span class="key-value" data-key="${keyVal}" data-idx="${idx}">${keyVal}</span>
+                <button class="key-toggle-btn" data-idx="${idx}">
+                  <i class="fa-regular fa-eye"></i> Reveal
+                </button>
+                <button class="key-copy-btn" data-key="${keyVal}" data-idx="${idx}"
+                        title="Copy key">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+              <p class="key-hint">Hover to partially reveal · click Reveal to show fully</p>
+            ` : `
+              <span class="no-key-badge">No key — purchased before key system</span>
+            `}
+          </div>
+
+          <div class="key-actions-col">
+            <a href="game.html?id=${entry.gameId}" class="btn-view-game">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> View
+            </a>
+          </div>
+
+        </div>
+      `;
+    }).join("");
+
+    // ── TOGGLE LISTENERS ────────────────────────────────────────
+    list.querySelectorAll(".key-toggle-btn[data-idx]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const idx      = btn.dataset.idx;
+        const keySpan  = list.querySelector(`.key-value[data-idx="${idx}"]`);
+        if (!keySpan) return;
+
+        const revealed = keySpan.classList.toggle("revealed");
+        btn.innerHTML  = revealed
+          ? `<i class="fa-regular fa-eye-slash"></i> Hide`
+          : `<i class="fa-regular fa-eye"></i> Reveal`;
+        btn.classList.toggle("active", revealed);
+      });
+    });
+
+    // ── COPY LISTENERS ──────────────────────────────────────────
+    list.querySelectorAll(".key-copy-btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const key = btn.dataset.key;
+        try {
+          await navigator.clipboard.writeText(key);
+          btn.innerHTML = `<i class="fa-solid fa-check"></i>`;
+          btn.classList.add("copied");
+          setTimeout(() => {
+            btn.innerHTML = `<i class="fa-regular fa-copy"></i>`;
+            btn.classList.remove("copied");
+          }, 2000);
+        } catch {
+          btn.title = "Copy failed — try manually";
+        }
+      });
+    });
+  }
+
+  // ── SEARCH ────────────────────────────────────────────────────
+  function applySearch() {
+    const q = document.getElementById("keysSearchInline").value.toLowerCase();
+    const filtered = q
+      ? allKeys.filter(k => k.title.toLowerCase().includes(q))
+      : allKeys;
+    renderKeys(filtered);
+  }
+
+  document.getElementById("keysSearchInline").addEventListener("input", applySearch);
+
+  // ── REVEAL ALL / HIDE ALL ─────────────────────────────────────
+  document.getElementById("revealAllBtn").addEventListener("click", () => {
+    document.querySelectorAll(".key-value").forEach(span => span.classList.add("revealed"));
+    document.querySelectorAll(".key-toggle-btn[data-idx]").forEach(btn => {
+      btn.innerHTML = `<i class="fa-regular fa-eye-slash"></i> Hide`;
+      btn.classList.add("active");
+    });
+  });
+
+  document.getElementById("hideAllBtn").addEventListener("click", () => {
+    document.querySelectorAll(".key-value").forEach(span => span.classList.remove("revealed"));
+    document.querySelectorAll(".key-toggle-btn[data-idx]").forEach(btn => {
+      btn.innerHTML = `<i class="fa-regular fa-eye"></i> Reveal`;
+      btn.classList.remove("active");
+    });
+  });
+
+  // ── LOAD DATA ─────────────────────────────────────────────────
+  async function loadKeys() {
+    const snap = await getDoc(doc(db, "users", userId));
+    if (!snap.exists()) return;
+
+    const user      = snap.data();
+    const purchases = user.purchasedGames || [];
+
+    document.getElementById("avatarInitial").textContent = (user.username || "?")[0].toUpperCase();
+
+    if (purchases.length === 0) {
+      document.getElementById("statTotal").textContent  = "0";
+      document.getElementById("statUnique").textContent = "0";
+      renderKeys([]);
+      return;
+    }
+
+    // Fetch all images in parallel
+    const uniqueIds = [...new Set(purchases.map(p => p.gameId))];
+    await Promise.all(uniqueIds.map(fetchImage));
+
+    // Most recent first
+    allKeys = [...purchases].sort((a, b) => b.purchasedAt.localeCompare(a.purchasedAt));
+
+    // Stats
+    document.getElementById("statTotal").textContent  = allKeys.length;
+    document.getElementById("statUnique").textContent = uniqueIds.length;
+
+    renderKeys(allKeys);
+  }
+
+  loadKeys();
+</script>
+
+</body>
+</html>

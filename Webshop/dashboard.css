@@ -554,3 +554,219 @@ h1 {
         grid-template-columns: 1fr;
     }
 }
+/* =========================
+   EDIT PROFILE MODAL
+   (appended block)
+========================= */
+
+.ep-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+}
+
+.ep-overlay.open {
+    display: flex;
+}
+
+.ep-modal {
+    background-color: #14141c;
+    border: 1px solid #222;
+    border-radius: 16px;
+    padding: 30px 28px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    animation: epPop 0.25s ease;
+}
+
+@keyframes epPop {
+    from { transform: scale(0.9); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+.ep-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.ep-modal-head h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.ep-close {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    padding: 0;
+}
+
+.ep-close:hover { color: #fff; }
+
+/* Avatar preview inside modal */
+.ep-avatar-preview {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 22px;
+}
+
+.ep-avatar-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7b2ff7, #5d1edb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 0 18px rgba(123,47,247,0.4);
+}
+
+#epAvatarImg {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #7b2ff7;
+    box-shadow: 0 0 18px rgba(123,47,247,0.4);
+}
+
+/* Fields */
+.ep-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.ep-field label {
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: #b8b8c8;
+}
+
+.ep-field input {
+    width: 100%;
+    height: 42px;
+    padding: 0 13px;
+    background-color: #1c1c25;
+    border: 1px solid #2c2c38;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 0.92rem;
+    outline: none;
+    transition: 0.25s ease;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.ep-field input::placeholder { color: #7d7d90; }
+
+.ep-field input:focus {
+    border-color: #7b2ff7;
+    box-shadow: 0 0 8px rgba(123,47,247,0.35);
+}
+
+.ep-field-hint {
+    font-size: 0.76rem;
+    color: #666;
+}
+
+.ep-field-error {
+    font-size: 0.8rem;
+    color: #e07070;
+    min-height: 16px;
+}
+
+/* Messages */
+.ep-error {
+    font-size: 0.84rem;
+    color: #e07070;
+    background-color: #2e0d0d;
+    border: 1px solid #6e2020;
+    border-radius: 8px;
+    padding: 9px 13px;
+    margin-bottom: 14px;
+    display: none;
+}
+
+.ep-success {
+    font-size: 0.84rem;
+    color: #4caf7d;
+    background-color: #0d2e1a;
+    border: 1px solid #1a6636;
+    border-radius: 8px;
+    padding: 9px 13px;
+    margin-bottom: 14px;
+    display: none;
+}
+
+/* Actions */
+.ep-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.ep-btn-save {
+    flex: 1;
+    padding: 11px;
+    background-color: #7b2ff7;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.ep-btn-save:hover { background-color: #5d1edb; }
+.ep-btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.ep-btn-cancel {
+    padding: 11px 18px;
+    background: none;
+    border: 1px solid #2c2c38;
+    border-radius: 10px;
+    color: #cfcfe6;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.ep-btn-cancel:hover {
+    border-color: #7b2ff7;
+    color: #fff;
+}
+
+/* Profile picture display on dashboard card */
+#profilePicImg {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #7b2ff7;
+    display: none;
+}

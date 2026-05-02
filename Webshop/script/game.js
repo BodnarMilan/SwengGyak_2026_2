@@ -307,7 +307,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // ── INIT ──────────────────────────────────────────────────────
-fetchGame();
+// fetchGame() is now called via fetchGameWithWishlist() at the bottom
 
 // ── CHECKOUT BUTTON GUARD ─────────────────────────────────────
 async function goToCheckout() {
@@ -323,3 +323,80 @@ document.addEventListener("DOMContentLoaded", () => {
     const checkoutBtn = document.getElementById("checkoutBtn");
     if (checkoutBtn) checkoutBtn.addEventListener("click", goToCheckout);
 });
+
+// ── WISHLIST ──────────────────────────────────────────────────
+// Appended block — adds a wishlist toggle button to the purchase
+// panel on the game detail page. Reads & writes to Firestore.
+
+async function getWishlist() {
+    if (!loggedIn || !userId) return [];
+    const snap = await getDoc(doc(db, "users", userId));
+    return snap.exists() ? (snap.data().wishlist || []) : [];
+}
+
+async function initWishlistButton(gameId) {
+    if (!loggedIn) return;
+
+    const wishlist    = await getWishlist();
+    const isWishlisted = wishlist.includes(gameId);
+
+    // Inject button into purchase panel after it was rendered
+    const panel = document.querySelector(".purchase-panel");
+    if (!panel) return;
+
+    const btn = document.createElement("button");
+    btn.className = `btn-wishlist ${isWishlisted ? "wishlisted" : ""}`;
+    btn.id = "btnWishlist";
+    btn.innerHTML = isWishlisted
+        ? `<i class="fa-solid fa-heart"></i> Remove from Wishlist`
+        : `<i class="fa-regular fa-heart"></i> Add to Wishlist`;
+
+    // Insert before the first button (Add to Cart) or at the top of panel actions
+    const firstBtn = panel.querySelector(".btn-add-cart") || panel.querySelector(".login-to-buy");
+    if (firstBtn) {
+        panel.insertBefore(btn, firstBtn);
+    } else {
+        panel.appendChild(btn);
+    }
+
+    btn.addEventListener("click", async () => {
+        const current   = await getWishlist();
+        const inList    = current.includes(gameId);
+        const updated   = inList
+            ? current.filter(id => id !== gameId)
+            : [...current, gameId];
+
+        await updateDoc(doc(db, "users", userId), { wishlist: updated });
+
+        const nowIn = updated.includes(gameId);
+        btn.className = `btn-wishlist ${nowIn ? "wishlisted" : ""}`;
+        btn.innerHTML = nowIn
+            ? `<i class="fa-solid fa-heart"></i> Remove from Wishlist`
+            : `<i class="fa-regular fa-heart"></i> Add to Wishlist`;
+    });
+}
+
+// Hook into fetchGame — after renderGame runs, init the wishlist button
+const _originalFetchGame = fetchGame;
+async function fetchGameWithWishlist() {
+    if (!gameId) {
+        document.getElementById("loadingMsg").textContent = "No game specified.";
+        return;
+    }
+    try {
+        const snap = await getDoc(doc(db, "games", gameId));
+        if (!snap.exists()) {
+            document.getElementById("loadingMsg").textContent = "Game not found.";
+            return;
+        }
+        const game = { id: snap.id, ...snap.data() };
+        renderGame(game);
+        await initWishlistButton(game.id);
+    } catch (err) {
+        document.getElementById("loadingMsg").textContent = "Failed to load game.";
+        console.error(err);
+    }
+}
+
+// Replace the init call at the bottom
+fetchGameWithWishlist();
