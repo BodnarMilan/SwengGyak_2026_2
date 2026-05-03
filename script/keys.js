@@ -4,13 +4,13 @@ import { db } from "./firebase-config.js";
   // ── GUARD ─────────────────────────────────────────────────────
   const loggedIn = sessionStorage.getItem("loggedIn") === "true";
   const userId   = sessionStorage.getItem("userId");
-  if (!loggedIn || !userId) window.location.href = "Main_page-login.html";
+  if (!loggedIn || !userId) window.location.href = "main_page-login.html";
 
   // ── LOGOUT ────────────────────────────────────────────────────
   document.getElementById("logoutBtn").addEventListener("click", () => {
     sessionStorage.clear();
     localStorage.removeItem("cart");
-    window.location.href = "Main_page-login.html";
+    window.location.href = "main_page-login.html";
   });
 
   // ── STATE ─────────────────────────────────────────────────────
@@ -36,7 +36,7 @@ import { db } from "./firebase-config.js";
         <div class="keys-empty">
           <i class="fa-solid fa-key"></i>
           <p>No keys found.</p>
-          <a href="Main_page.html">Browse the Store</a>
+          <a href="main_page.html">Browse the Store</a>
         </div>`;
       return;
     }

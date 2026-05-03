@@ -5,13 +5,13 @@ import { db } from "./firebase-config.js";
   const loggedIn = sessionStorage.getItem("loggedIn") === "true";
   const userId   = sessionStorage.getItem("userId");
   const currency = (sessionStorage.getItem("currency") || localStorage.getItem("currency") || "huf").toLowerCase();
-  if (!loggedIn || !userId) window.location.href = "Main_page-login.html";
+  if (!loggedIn || !userId) window.location.href = "main_page-login.html";
 
   // ── LOGOUT ────────────────────────────────────────────────────
   document.getElementById("logoutBtn").addEventListener("click", () => {
     sessionStorage.clear();
     localStorage.removeItem("cart");
-    window.location.href = "Main_page-login.html";
+    window.location.href = "main_page-login.html";
   });
 
   // ── STATE ─────────────────────────────────────────────────────
@@ -50,7 +50,7 @@ import { db } from "./firebase-config.js";
         <div class="orders-empty">
           <i class="fa-solid fa-bag-shopping"></i>
           <p>No purchases found.</p>
-          <a href="Main_page.html">Browse the Store</a>
+          <a href="main_page.html">Browse the Store</a>
         </div>`;
       return;
     }

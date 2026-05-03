@@ -7,14 +7,14 @@ import { db } from "./firebase-config.js";
   const username = sessionStorage.getItem("username");
 
   if (!loggedIn || !userId) {
-    window.location.href = "Main_page-login.html";
+    window.location.href = "main_page-login.html";
   }
 
   // ── LOGOUT ────────────────────────────────────────────────────
   document.getElementById("logoutBtn").addEventListener("click", () => {
     sessionStorage.clear();
     localStorage.removeItem("cart");
-    window.location.href = "Main_page-login.html";
+    window.location.href = "main_page-login.html";
   });
 
   // ── LOAD USER DATA ────────────────────────────────────────────

@@ -14,20 +14,20 @@ const currency = (sessionStorage.getItem("currency") || localStorage.getItem("cu
 
 // ── GUARD: must be logged in ──────────────────────────────────
 if (!loggedIn || !userId) {
-    window.location.href = "Main_page-login.html";
+    window.location.href = "main_page-login.html";
 }
 
 // ── AUTH AREA ─────────────────────────────────────────────────
 const authArea = document.getElementById("authArea");
 if (loggedIn && username) {
     authArea.innerHTML = `
-        <span class="user-greeting">Hi, <a href="Dashboard.html" class="username-link"><strong>${username}</strong></a></span>
+        <span class="user-greeting">Hi, <a href="dashboard.html" class="username-link"><strong>${username}</strong></a></span>
         <button class="logout-btn" id="logoutBtn">Logout</button>
     `;
     document.getElementById("logoutBtn").addEventListener("click", () => {
         sessionStorage.clear();
         localStorage.removeItem("cart");
-        window.location.href = "Main_page-login.html";
+        window.location.href = "main_page-login.html";
     });
 }
 
@@ -60,7 +60,7 @@ async function renderSummary() {
 
     // Empty cart → send back
     if (!cart || cart.length === 0) {
-        window.location.href = "Main_page.html";
+        window.location.href = "main_page.html";
         return;
     }
 

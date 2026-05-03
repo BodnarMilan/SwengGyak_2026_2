@@ -226,7 +226,7 @@ form.addEventListener("submit", async (e) => {
         submitBtn.value = "Done!";
 
         setTimeout(() => {
-            window.location.href = "Main_page-login.html";
+            window.location.href = "main_page-login.html";
         }, 2000);
 
     } catch (err) {

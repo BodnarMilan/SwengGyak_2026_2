@@ -19,13 +19,13 @@ const gameId = params.get("id");
 const authArea = document.getElementById("authArea");
 if (loggedIn && username) {
     authArea.innerHTML = `
-        <span class="user-greeting">Hi, <a href="Dashboard.html" class="username-link"><strong>${username}</strong></a></span>
+        <span class="user-greeting">Hi, <a href="dashboard.html" class="username-link"><strong>${username}</strong></a></span>
         <button class="logout-btn" id="logoutBtn">Logout</button>
     `;
     document.getElementById("logoutBtn").addEventListener("click", () => {
         sessionStorage.clear();
         localStorage.removeItem("cart");
-        window.location.href = "Main_page-login.html";
+        window.location.href = "main_page-login.html";
     });
 }
 
@@ -205,7 +205,7 @@ function renderGame(game) {
                     </button>
                 ` : `
                     <p class="login-to-buy">
-                        <a href="Main_page-login.html">Login</a> to purchase this game.
+                        <a href="main_page-login.html">Login</a> to purchase this game.
                     </p>
                 `}
             </div>

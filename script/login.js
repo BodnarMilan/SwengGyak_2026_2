@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("language", userData.language || "hu");
 
             await recordLogin(userDoc.id);
-            window.location.href = "Main_page.html";
+            window.location.href = "main_page.html";
 
         } catch (err) {
             loginError.textContent = `Error: ${err.message}`;

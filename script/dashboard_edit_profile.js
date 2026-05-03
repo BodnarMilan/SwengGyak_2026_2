@@ -193,7 +193,7 @@
     }
   });
 
-  // ── LOAD PROFILE PICTURE ON DASHBOARD OPEN ───────────────────
+  // ── LOAD PROFILE PICTURE ON dashboard OPEN ───────────────────
   // If the user already has a profilePicture stored, show it
   // instead of the initial letter when the dashboard loads.
   (async () => {
