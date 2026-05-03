@@ -12,6 +12,9 @@ const loggedIn = sessionStorage.getItem("loggedIn") === "true";
 const userId   = sessionStorage.getItem("userId");
 const username = sessionStorage.getItem("username");
 const currency = (sessionStorage.getItem("currency") || localStorage.getItem("currency") || "huf").toLowerCase();
+let currentPage = 1;
+const itemsPerPage = 20;
+
 
 // ── AUTH AREA ─────────────────────────────────────────────────
 const authArea = document.getElementById("authArea");
@@ -84,35 +87,73 @@ function renderGames() {
     const filtered = allGames.filter(game => {
         const platformOk = activePlatform === "all" ||
             (Array.isArray(game.platform) && game.platform.includes(activePlatform));
+
         const genreOk = activeGenre === "all" ||
             (Array.isArray(game.genre) && game.genre.includes(activeGenre));
+
         const searchOk = searchQuery === "" ||
             game.title.toLowerCase().includes(searchQuery.toLowerCase());
+
         return platformOk && genreOk && searchOk;
     });
 
-    if (filtered.length === 0) {
-        grid.innerHTML = `<p class="loading-msg">No games found for this filter.</p>`;
+    // PAGINATION
+    const start = (currentPage - 1) * itemsPerPage;
+    const paginatedGames = filtered.slice(start, start + itemsPerPage);
+
+    if (paginatedGames.length === 0) {
+        grid.innerHTML = `<p>No games found.</p>`;
         return;
     }
 
-    filtered.forEach(game => {
-        const displayPrice    = getPrice(game);
-        const displayPlatform = Array.isArray(game.platform) ? game.platform.join(", ") : (game.platform || "");
+    paginatedGames.forEach(game => {
+        const displayPrice = getPrice(game);
+        const displayPlatform = Array.isArray(game.platform)
+            ? game.platform.join(", ")
+            : "";
 
         const card = document.createElement("a");
         card.className = "game-card";
         card.href = `game.html?id=${game.id}`;
+
         card.innerHTML = `
-            <img src="${game.image}" alt="${game.title}" loading="lazy">
+            <img src="${game.image}">
             <div class="game-info">
                 <h3>${game.title}</h3>
-                <p class="platform">${displayPlatform}</p>
-                <p class="price">${displayPrice}</p>
+                <p>${displayPlatform}</p>
+                <p>${displayPrice}</p>
             </div>
         `;
+
         grid.appendChild(card);
     });
+
+    renderPagination(filtered.length);
+}
+
+function renderPagination(totalItems) {
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        btn.className = "page-btn";
+
+        if (i === currentPage) {
+            btn.classList.add("active");
+        }
+
+        btn.addEventListener("click", () => {
+            currentPage = i;
+            renderGames();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        pagination.appendChild(btn);
+    }
 }
 
 // ── CART (Firestore if logged in, otherwise locked) ───────────
@@ -379,7 +420,11 @@ async function renderGamesWithWishlist() {
         return;
     }
 
-    filtered.forEach(game => {
+        // PAGINATION
+        const start = (currentPage - 1) * itemsPerPage;
+        const paginatedGames = filtered.slice(start, start + itemsPerPage);
+
+        paginatedGames.forEach(game => {
         const displayPrice    = getPrice(game);
         const displayPlatform = Array.isArray(game.platform) ? game.platform.join(", ") : (game.platform || "");
         const isWishlisted    = userWishlist.includes(game.id);

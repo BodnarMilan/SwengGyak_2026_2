@@ -509,7 +509,7 @@ a {
 
 .game-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
 }
 
@@ -646,4 +646,24 @@ a {
 .heart-btn.wishlisted {
     opacity: 1;
     transform: scale(1);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 40px 0;
+}
+
+.page-btn {
+    padding: 8px 14px;
+    border: 1px solid #2c2c38;
+    background: #1c1c25;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.page-btn.active {
+    background: #7b2ff7;
 }
