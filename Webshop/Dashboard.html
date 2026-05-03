@@ -347,7 +347,7 @@
   loadDashboard();
 
   // ── LOGIN HISTORY ───────────────────────────────────────────
-  // Appended block — reads loginHistory from the user doc and
+  // reads loginHistory from the user doc and
   // renders a table of the last 30 days of logins.
   async function renderLoginHistory(history) {
     const container = document.getElementById("loginHistoryList");
@@ -392,7 +392,7 @@
   }
 
   // ── WISHLIST ────────────────────────────────────────────────
-  // Appended block — reads wishlist game IDs from the user doc,
+  // reads wishlist game IDs from the user doc,
   // fetches each game from the games collection, and renders cards.
   async function renderWishlist(wishlistIds) {
     const container = document.getElementById("wishlistItems");
@@ -438,7 +438,7 @@
 
 
 <!-- ── EDIT PROFILE MODAL ──────────────────────────────────────
-     Appended block — modal for editing username and profile
+     modal for editing username and profile
      picture URL. Opened by the Edit Profile button on the
      profile card. Writes to Firestore on save and refreshes
      the profile card without a full page reload.
@@ -483,7 +483,7 @@
 
 <script type="module">
   // ── EDIT PROFILE ─────────────────────────────────────────────
-  // Appended block — handles opening/closing the Edit Profile
+  // handles opening/closing the Edit Profile
   // modal, live avatar preview, duplicate username check,
   // and Firestore write + session update on save.
 
@@ -697,7 +697,7 @@
 
 
 <!-- ── WALLET BUTTONS ─────────────────────────────────────────
-     Appended block — Top Up shows a not-supported notice,
+     Top Up shows a not-supported notice,
      Overview redirects to wallet.html.
 ──────────────────────────────────────────────────────────── -->
 <script>
