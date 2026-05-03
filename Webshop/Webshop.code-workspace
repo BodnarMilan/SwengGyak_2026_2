@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"name": "SwengGyak_2026_2",
+			"path": ".."
+		},
+		{
+			"name": "SwengGyak_2026_2",
+			"path": "../../../.github/SwengGyak_2026_2"
+		},
+		{
+			"name": "SwengGyak_2026_2",
+			"path": "../../../.github/SwengGyak_2026_2/SwengGyak_2026_2/SwengGyak_2026_2"
+		},
+		{
+			"name": "SwengGyak_2026_2",
+			"path": "../../../New folder/SwengGyak_2026_2"
+		},
+		{
+			"name": "SwengGyak_2026_2",
+			"path": "../SwengGyak_2026_2"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Webshop"
+	}
+}

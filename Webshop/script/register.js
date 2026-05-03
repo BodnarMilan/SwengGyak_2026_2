@@ -63,6 +63,40 @@ function hideFormMessages() {
     registerSuccess.classList.remove("visible");
 }
 
+// ── PASSWORD POLICY ───────────────────────────────────────────
+function validatePassword(password) {
+    const commonPasswords = [
+        "123456", "12345678", "password", "qwerty",
+        "admin123", "letmein", "111111"
+    ];
+
+    if (commonPasswords.includes(password.toLowerCase())) {
+        return "This password is too common.";
+    }
+
+    if (password.length < 8) {
+        return "Password must be at least 8 characters.";
+    }
+
+    if (!/[A-Z]/.test(password)) {
+        return "Password must contain an uppercase letter.";
+    }
+
+    if (!/[a-z]/.test(password)) {
+        return "Password must contain a lowercase letter.";
+    }
+
+    if (!/[0-9]/.test(password)) {
+        return "Password must contain a number.";
+    }
+
+    if (!/[!@#$%^&*]/.test(password)) {
+        return "Password must contain a special character (!@#).";
+    }
+
+    return null;
+}
+
 // ── LIVE DUPLICATE CHECK: EMAIL ───────────────────────────────
 emailInput.addEventListener("blur", async () => {
     const email = emailInput.value.trim().toLowerCase();
@@ -91,7 +125,7 @@ usernameInput.addEventListener("blur", async () => {
     }
 });
 
-// ── LIVE PASSWORD MATCH CHECK ─────────────────────────────────
+// ── PASSWORD MATCH CHECK ─────────────────────────────────────
 confirmInput.addEventListener("input", () => {
     if (confirmInput.value && passwordInput.value !== confirmInput.value) {
         setError(confirmInput, passwordError, "Passwords do not match.");
@@ -100,43 +134,13 @@ confirmInput.addEventListener("input", () => {
     }
 });
 
-// ── PASSWORD TOGGLE (standalone function for inline onclick) ──
+// ── PASSWORD TOGGLE ──────────────────────────────────────────
 window.toggleVis = function(inputId, btn) {
     const input = document.getElementById(inputId);
     const type  = input.type === "password" ? "text" : "password";
     input.type  = type;
     btn.textContent = type === "password" ? "Show" : "Hide";
 };
-
-// ── REGION PREFERENCES ────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", () => {
-    const languageSelect = document.getElementById("language");
-    const currencySelect = document.getElementById("currency");
-    const saveBtn        = document.getElementById("savePreferences");
-    const regionDisplay  = document.getElementById("regionDisplay");
-
-    function formatLanguage(lang) { return lang === "en" ? "English" : "Magyar"; }
-    function formatCurrency(curr) { return curr === "eur" ? "EUR" : "HUF"; }
-
-    function updateHeader() {
-        const lang = localStorage.getItem("language") || "hu";
-        const curr = localStorage.getItem("currency") || "huf";
-        regionDisplay.textContent = formatLanguage(lang) + " | " + formatCurrency(curr) + " ▼";
-    }
-
-    const savedLang = localStorage.getItem("language");
-    const savedCurr = localStorage.getItem("currency");
-    if (savedLang) languageSelect.value = savedLang;
-    if (savedCurr) currencySelect.value = savedCurr;
-    updateHeader();
-
-    saveBtn.addEventListener("click", e => {
-        e.preventDefault();
-        localStorage.setItem("language", languageSelect.value);
-        localStorage.setItem("currency", currencySelect.value);
-        updateHeader();
-    });
-});
 
 // ── FORM SUBMIT ───────────────────────────────────────────────
 form.addEventListener("submit", async (e) => {
@@ -148,77 +152,77 @@ form.addEventListener("submit", async (e) => {
     const password = passwordInput.value;
     const confirm  = confirmInput.value;
 
-    // ── CLIENT-SIDE VALIDATION ────────────────────────────────
     let hasError = false;
+
+    clearError(emailInput, emailError);
+    clearError(usernameInput, usernameError);
+    clearError(passwordInput, passwordError);
+    clearError(confirmInput, passwordError);
 
     if (!email) {
         setError(emailInput, emailError, "Email is required.");
+        alert("Email is required.");
         hasError = true;
     }
 
     if (!username) {
         setError(usernameInput, usernameError, "Username is required.");
+        alert("Username is required.");
         hasError = true;
     }
 
-    if (password.length < 6) {
-        setError(passwordInput, passwordError, "Password must be at least 6 characters.");
+    const passwordValidationError = validatePassword(password);
+
+    if (passwordValidationError) {
+        setError(passwordInput, passwordError, passwordValidationError);
+        alert(passwordValidationError);
         hasError = true;
     }
 
     if (password !== confirm) {
         setError(confirmInput, passwordError, "Passwords do not match.");
+        alert("Passwords do not match.");
         hasError = true;
     }
 
     if (hasError) return;
 
-    // ── FIRESTORE DUPLICATE CHECK ─────────────────────────────
     const submitBtn = form.querySelector(".login-btn");
     submitBtn.disabled = true;
     submitBtn.value = "Checking...";
 
     try {
-        // Check email
         const emailQuery = query(collection(db, "users"), where("email", "==", email));
         const emailSnap  = await getDocs(emailQuery);
         if (!emailSnap.empty) {
             setError(emailInput, emailError, "This email is already registered.");
+            alert("This email is already registered.");
             submitBtn.disabled = false;
             submitBtn.value = "Register";
             return;
         }
 
-        // Check username (case-insensitive via lowercase field)
         const userQuery = query(collection(db, "users"), where("usernameLower", "==", username.toLowerCase()));
         const userSnap  = await getDocs(userQuery);
         if (!userSnap.empty) {
             setError(usernameInput, usernameError, "This username is already taken.");
+            alert("This username is already taken.");
             submitBtn.disabled = false;
             submitBtn.value = "Register";
             return;
         }
 
-        // ── SAVE USER TO FIRESTORE ────────────────────────────
-        // Document ID = lowercase username (readable & unique)
         const docId = username.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
 
         await setDoc(doc(db, "users", docId), {
-            username:      username,
+            username: username,
             usernameLower: username.toLowerCase(),
-            email:         email,
-            password:      password,   // ⚠ plain text for now — replace with hashing later
-            createdAt:     new Date().toISOString(),
-
-            // Future fields — already structured and ready to use
-            language:      localStorage.getItem("language") || "hu",
-            currency:      localStorage.getItem("currency") || "huf",
-            purchasedGames: [],
-            cart:          [],
-            wishlist:      []
+            email: email,
+            password: password,
+            createdAt: new Date().toISOString()
         });
 
-        showFormSuccess("Account created successfully! Redirecting to login...");
+        showFormSuccess("Account created successfully!");
         submitBtn.value = "Done!";
 
         setTimeout(() => {
@@ -227,6 +231,7 @@ form.addEventListener("submit", async (e) => {
 
     } catch (err) {
         showFormError(`Something went wrong: ${err.message}`);
+        alert("Error: " + err.message);
         console.error(err);
         submitBtn.disabled = false;
         submitBtn.value = "Register";
