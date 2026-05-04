@@ -4,3 +4,6 @@ Téma: Videójáték Webshop
 Adatbázis: Firebase, Firestore
 Frontend: HTML, CSS, JavaScript
 Backend: Nodejs
+
+
+Github page: https://bodnarmilan.github.io/SwengGyak_2026_2/
